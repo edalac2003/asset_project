@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asset_project.API", "asset_project.API\asset_project.API.csproj", "{CDAF18CB-44D1-443D-8392-A59DB4B991C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asset_project.API", "asset_project.API\asset_project.API.csproj", "{CDAF18CB-44D1-443D-8392-A59DB4B991C2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F9EA52E9-7B3B-4CFD-9A89-E3F9A5C257CF} = {F9EA52E9-7B3B-4CFD-9A89-E3F9A5C257CF}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asset_project.Shared", "asset_project.Shared\asset_project.Shared.csproj", "{F9EA52E9-7B3B-4CFD-9A89-E3F9A5C257CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asset_project.Shared", "asset_project.Shared\asset_project.Shared.csproj", "{F9EA52E9-7B3B-4CFD-9A89-E3F9A5C257CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asset_project.WEB", "asset_project.WEB\asset_project.WEB.csproj", "{A0880B7F-268B-4C62-B54E-7553988D8BDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asset_project.WEB", "asset_project.WEB\asset_project.WEB.csproj", "{A0880B7F-268B-4C62-B54E-7553988D8BDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
