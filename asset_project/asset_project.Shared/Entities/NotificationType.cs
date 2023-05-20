@@ -1,9 +1,10 @@
 ﻿namespace asset_project.Shared.Entities
 {
-    public class Categoria
+    public class NotificationType
     {
         public int Id { get; set; }
 
-        public string nombre { get; set; } = null!;
+        public string? name { get; set; }
+
     }
 }

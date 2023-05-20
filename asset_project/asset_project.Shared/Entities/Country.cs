@@ -1,8 +1,9 @@
 ﻿namespace asset_project.Shared.Entities
 {
-    public class Propiedad
+    public class Country
     {
         public int Id { get; set; }
-        public string Nombre { get; set; } = null!;
+
+        public string? Name { get; set; }
     }
 }
