@@ -6,8 +6,8 @@
 
         public string Name { get; set; } = null!;
 
-        public Property? Property { get; set; } = null!;
+        public Property Property { get; set; } = null!;
 
-        public long PropertyId { get; set; }
+        public int PropertyId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Asset
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string Code { get; set; } = null!;
 
@@ -24,6 +24,6 @@
 
         public AssetType? AssetType { get; set; }
 
-        public long AssetTypeId { get; set; }
+        public int AssetTypeId { get; set; }
     }
 }

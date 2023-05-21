@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace asset_project.Shared.Entities
 {
@@ -43,6 +42,8 @@ namespace asset_project.Shared.Entities
         [Display(Name = "Tipo Identificación")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public IdentificationType? IdentificationType { get; set; }
+
+        public int IdentificationTypeId { get; set; }
 
         [Display(Name = "Ciudad")]
         public City? City { get; set; }

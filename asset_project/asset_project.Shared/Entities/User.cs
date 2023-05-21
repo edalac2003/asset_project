@@ -16,6 +16,6 @@
 
         public Person? Person { get; set; }
 
-        public long PersonId { get; set; }
+        public int PersonId { get; set; }
     }
 }

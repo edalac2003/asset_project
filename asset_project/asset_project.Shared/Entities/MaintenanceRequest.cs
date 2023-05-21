@@ -2,7 +2,7 @@
 {
     public class MaintenanceRequest
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public DateTime? RegisterDate { get; set; } = null;
 
@@ -20,6 +20,6 @@
 
         public Asset? Asset { get; set; } = null!;
 
-        public long AssetId { get; set; }
+        public int AssetId { get; set; }
     }
 }
