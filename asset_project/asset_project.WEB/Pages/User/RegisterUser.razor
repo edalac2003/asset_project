@@ -1,0 +1,142 @@
+﻿@page "/user/register"
+@inject NavigationManager navigationManager
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Registro de Personas</h4>
+            <form class="form-sample">
+                <p class="card-description"> Personal info </p>
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Nombres</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Apellidos</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Género</label>
+                            <select class="form-control">
+                                <option selected>-- Seleccione --</option>
+                                <option>Masculino</option>
+                                <option>Femenino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" placeholder="dd/mm/yyyy" max="2023-05-15"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="col-form-label">Tipo Documento</label>
+                            <select class="form-control">
+                                <option selected>-- Seleccione --</option>
+                                <option value="1">CC</option>
+                                <option value="2">CE</option>
+                                <option value="3">NIT</option>
+                                <option value="4">PASS</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Número de Identificación</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Número de Teléfono</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Email</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                        </div>
+                    </div>
+                </div>
+                <p class="card-description"> Dirección </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="col-form-label">Departamento</label>
+                            <select class="form-control">
+                                <option selected>-- Seleccione --</option>
+                                <option>Departamento 1</option>
+                                <option>Departamento 2</option>
+                                <option>Departamento 3</option>
+                                <option>Departamento 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Ciudad</label>
+                            <select class="form-control">
+                                <option selected>-- Seleccione --</option>
+                                <option>Ciudad 1</option>
+                                <option>Ciudad 2</option>
+                                <option>Ciudad 3</option>
+                                <option>Ciudad 4</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Dirección</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <p class="card-description"> Información del usuario</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Contraseña</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6 ">
+                        <button class="btn btn-dark">Cancelar</button>
+                        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

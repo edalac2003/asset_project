@@ -1,0 +1,114 @@
+﻿@inject NavigationManager navigationManager
+
+<div class="container-scroller">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+            <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
+            <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+        </div>
+        <ul class="nav">
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-speedometer"></i>
+                    </span>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <NavLink class="nav-link" href="/user/register">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-account-tie"></i>
+                    </span>
+                    <span class="menu-title">Gestión Personas</span>
+                </NavLink>
+            </li>
+            <li class="nav-item menu-items" hidden>
+                <a class="nav-link" href="#">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-account-group"></i>
+                    </span>
+                    <span class="menu-title">Gestión usuarios</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-assetManagement" aria-expanded="false" aria-controls="ui-assetManagement">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-laptop"></i>
+                    </span>
+                    <span class="menu-title">Gestión Activos Fijos</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-assetManagement">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/asset/createCategory">
+                                <span class="mdi mdi-shape-plus" aria-hidden="true"></span>Crear Categoría
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/asset/createAssetType">
+                                <span class="mdi mdi-factory" aria-hidden="true"></span>Crear Tipo Activo Fijo
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/asset/createAsset">
+                                <span class="mdi mdi-newspaper-plus" aria-hidden="true"></span>Crear Activo Fijo
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/asset/unsubscribeAsset">
+                                <span class="mdi mdi-newspaper-remove" aria-hidden="true"></span>Dar de Baja Activo Fijo
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-maintenance" aria-expanded="false" aria-controls="ui-maintenance">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-chart-bar"></i>
+                    </span>
+                    <span class="menu-title">Mantenimiento</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <div class="collapse" id="ui-maintenance">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="">
+                                <span class="mdi mdi-text-box-outline" aria-hidden="true"></span>Crear Solicitud
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="">
+                                <span class="mdi mdi-text-box-search-outline" aria-hidden="true"></span>Buscar Solicitud
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            @*Example*@
+            <li class="nav-item menu-items" hidden>
+                <a class="nav-link" href="pages/icons/mdi.html">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-contacts"></i>
+                    </span>
+                    <span class="menu-title">Other more</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
