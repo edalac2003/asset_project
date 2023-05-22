@@ -4,10 +4,6 @@
     {
         public int Id { get; set; }
 
-        public Asset? Asset { get; set; }
-        
-        public int AssetId { get; set; }
-
         public StatusType? StatusType { get; set; }
 
         public DateTime AssignmentDateTime { get; set; }

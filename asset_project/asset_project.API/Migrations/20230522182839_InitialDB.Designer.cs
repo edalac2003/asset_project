@@ -12,8 +12,8 @@ using asset_project.API.Data;
 namespace asset_project.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230521144350_InitialDb")]
-    partial class InitialDb
+    [Migration("20230522182839_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,8 +92,6 @@ namespace asset_project.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
 
                     b.HasIndex("Id");
 
@@ -468,9 +466,6 @@ namespace asset_project.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssetId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("AssignmentDateTime")
                         .HasColumnType("datetime2");
 
@@ -487,8 +482,6 @@ namespace asset_project.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
 
                     b.HasIndex("Id");
 
@@ -549,19 +542,11 @@ namespace asset_project.API.Migrations
 
             modelBuilder.Entity("asset_project.Shared.Entities.AssetDetail", b =>
                 {
-                    b.HasOne("asset_project.Shared.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("asset_project.Shared.Entities.Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Asset");
 
                     b.Navigation("Property");
                 });
@@ -657,12 +642,6 @@ namespace asset_project.API.Migrations
 
             modelBuilder.Entity("asset_project.Shared.Entities.WorkOrder", b =>
                 {
-                    b.HasOne("asset_project.Shared.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("asset_project.Shared.Entities.MaintenanceRequest", "MaintenanceRequest")
                         .WithMany()
                         .HasForeignKey("MaintenanceRequestId")
@@ -672,8 +651,6 @@ namespace asset_project.API.Migrations
                     b.HasOne("asset_project.Shared.Entities.StatusType", "StatusType")
                         .WithMany()
                         .HasForeignKey("StatusTypeId");
-
-                    b.Navigation("Asset");
 
                     b.Navigation("MaintenanceRequest");
 

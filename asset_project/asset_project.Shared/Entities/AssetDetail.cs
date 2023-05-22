@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public Asset? Asset { get; set; }
+        /*public Asset? Asset { get; set; }*/
 
         public int AssetId { get; set; }
 

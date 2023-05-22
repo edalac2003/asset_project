@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace asset_project.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -137,6 +137,27 @@ namespace asset_project.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Assetdetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AssetId = table.Column<int>(type: "int", nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assetdetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Assetdetails_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AssetTypes",
                 columns: table => new
                 {
@@ -245,33 +266,6 @@ namespace asset_project.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Assetdetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AssetId = table.Column<int>(type: "int", nullable: false),
-                    PropertyId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Assetdetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Assetdetails_Assets_AssetId",
-                        column: x => x.AssetId,
-                        principalTable: "Assets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Assetdetails_Properties_PropertyId",
-                        column: x => x.PropertyId,
-                        principalTable: "Properties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MaintenanceRequests",
                 columns: table => new
                 {
@@ -328,7 +322,6 @@ namespace asset_project.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AssetId = table.Column<int>(type: "int", nullable: false),
                     StatusTypeId = table.Column<int>(type: "int", nullable: true),
                     AssignmentDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MaintenanceRequestId = table.Column<int>(type: "int", nullable: false),
@@ -338,12 +331,6 @@ namespace asset_project.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkOrders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkOrders_Assets_AssetId",
-                        column: x => x.AssetId,
-                        principalTable: "Assets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_WorkOrders_MaintenanceRequests_MaintenanceRequestId",
                         column: x => x.MaintenanceRequestId,
@@ -378,11 +365,6 @@ namespace asset_project.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assetdetails_AssetId",
-                table: "Assetdetails",
-                column: "AssetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assetdetails_Id",
@@ -528,11 +510,6 @@ namespace asset_project.API.Migrations
                 name: "IX_WorkOrderDetails_WorkOrderId",
                 table: "WorkOrderDetails",
                 column: "WorkOrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkOrders_AssetId",
-                table: "WorkOrders",
-                column: "AssetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkOrders_Id",
