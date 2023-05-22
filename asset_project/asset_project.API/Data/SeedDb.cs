@@ -14,7 +14,7 @@ namespace asset_project.API.Data
         public async Task SeedAsync()
         {
             await FillCategories();
-            await FillCountries();
+            //await FillCountries();
             await FillIdentificationTypes();
             await FillNotificationTypes();
             await FillStatusTypes();

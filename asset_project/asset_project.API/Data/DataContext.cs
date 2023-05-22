@@ -50,7 +50,7 @@ namespace asset_project.API.Data
             modelBuilder.Entity<State>().HasIndex(s => new { s.Name, s.CountryId });
             modelBuilder.Entity<City>().HasIndex(c => new { c.Name, c.StateId });
             modelBuilder.Entity<IdentificationType>().HasIndex(i => i.Id);
-            modelBuilder.Entity<Category>().HasIndex(c => c.Name);
+            modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<AssetType>().HasIndex(t => t.Name);
             modelBuilder.Entity<Person>().HasIndex(p => new { p.IdentificationNumber, p.IdentificationTypeId });
             modelBuilder.Entity<Property>().HasIndex(p => p.Name);
