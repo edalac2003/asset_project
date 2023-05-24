@@ -1,9 +1,9 @@
-﻿
+﻿using asset_project.API.Data;
 
-using asset_project.API.Data;
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace asset_project.API.Controllers
 {
@@ -29,24 +29,20 @@ namespace asset_project.API.Controllers
 
         public async Task<ActionResult> PostAsync(AssetType assetType)
         {
-            try
-            {
-                _context.Add(assetType);                
+
+            
+            if (assetType!= null)
+            {                
+                _context.Add(assetType);
                 await _context.SaveChangesAsync();
-                return Ok(assetType);
+                return Ok(assetType);               
             }
-            catch (DbUpdateException dbUpdateException)
+            else 
             {
-                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
-                {
-                    return BadRequest("Ya existe un tipo activo con el mismo nombre.");
-                }
-                return BadRequest(dbUpdateException.Message);
+                return NoContent();
             }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+
+
         }
 
         [HttpPut]

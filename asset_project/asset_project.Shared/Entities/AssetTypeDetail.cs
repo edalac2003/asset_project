@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
 
-        public Asset? Asset { get; set; }
+        public AssetType? AssetType { get; set; }
 
-        public int AssetId { get; set; }
+        public int AssetTypeId { get; set; }
 
         public Property? Property { get; set; }
 
