@@ -1,5 +1,7 @@
 ﻿@page "/user/register"
+@using Microsoft.AspNetCore.Authorization;
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Admin")]
 
 <div class="col-12 grid-margin">
     <div class="card">
