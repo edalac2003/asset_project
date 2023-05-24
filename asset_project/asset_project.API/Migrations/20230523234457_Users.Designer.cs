@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using asset_project.API.Data;
 
@@ -11,9 +12,11 @@ using asset_project.API.Data;
 namespace asset_project.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230523234457_Users")]
+    partial class Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,39 +245,16 @@ namespace asset_project.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name");
-
-                    b.ToTable("AssetTypes");
-                });
-
-            modelBuilder.Entity("asset_project.Shared.Entities.AssetTypeDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AssetTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
-
-                    b.HasIndex("AssetTypeId");
+                    b.HasIndex("Name");
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("AssetTypeDetail");
+                    b.ToTable("AssetTypes");
                 });
 
             modelBuilder.Entity("asset_project.Shared.Entities.Category", b =>
@@ -851,25 +831,13 @@ namespace asset_project.API.Migrations
                     b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("asset_project.Shared.Entities.AssetTypeDetail", b =>
+            modelBuilder.Entity("asset_project.Shared.Entities.AssetType", b =>
                 {
-                    b.HasOne("asset_project.Shared.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("asset_project.Shared.Entities.AssetType", null)
-                        .WithMany("Details")
-                        .HasForeignKey("AssetTypeId");
-
                     b.HasOne("asset_project.Shared.Entities.Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Asset");
 
                     b.Navigation("Property");
                 });
@@ -991,7 +959,9 @@ namespace asset_project.API.Migrations
                     b.Navigation("WorkOrder");
                 });
 
+            modelBuilder.Entity("asset_project.Shared.Entities.City", b =>
                 {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("asset_project.Shared.Entities.Country", b =>
