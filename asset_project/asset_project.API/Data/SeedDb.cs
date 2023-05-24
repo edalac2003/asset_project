@@ -83,17 +83,62 @@ namespace asset_project.API.Data
         {
             if (!_context.Countries.Any())
             {
-                _context.Countries.Add(new Country { Id = 1, Name = "Colombia " });
-                _context.States.Add(new State { Id = 1, Name = "Antioquia", CountryId = 1 });
-                _context.Cities.Add(new City { Id = 1, Name = "Medellín", StateId = 1 });
-                _context.Cities.Add(new City { Id = 2, Name = "Bello", StateId = 1 });
-                _context.Cities.Add(new City { Id = 3, Name = "Envigado", StateId =1 });
-                _context.Cities.Add(new City { Id = 4, Name = "Itagüí", StateId = 1 });
-                _context.Cities.Add(new City { Id = 5, Name = "Sabaneta", StateId = 1 });
-                _context.Cities.Add(new City { Id = 6, Name = "La Estrella", StateId =1 });
-                _context.Cities.Add(new City { Id = 7, Name = "Caldas", StateId = 1 });
-                _context.Cities.Add(new City { Id = 8, Name = "Copacabana", StateId = 1 });
-                _context.Cities.Add(new City { Id = 9, Name = "Girardota", StateId = 1 });
+                _context.Countries.Add(new Country 
+                { 
+                    Name = "Colombia ",
+                    States = new List<State>() 
+                    {
+                        new State()
+                        {
+                            Name = "Antioquia",
+                            Cities = new List<City>()
+                            {
+                                new City { Name = "Medellín" },
+                                new City { Name = "Bello" },
+                                new City { Name = "Envigado" },
+                                new City { Name = "Itagüí" },
+                                new City { Name = "Sabaneta" },
+                                new City { Name = "La Estrella" },
+                                new City { Name = "Caldas" },
+                                new City { Name = "Copacabana" },
+                                new City { Name = "Girardota" },
+
+                            }
+                        },
+                        new State()
+                        {
+                            Name = "Sucre",
+                            Cities = new List<City>()
+                            {
+                                new City { Name = "Sincelejo" },
+                                new City { Name = "Corozal" },
+                                new City { Name = "Sincé" },
+                                new City { Name = "Betulia" },
+                                new City { Name = "Tolú" },
+                                new City { Name = "Coveñas" },
+                                new City { Name = "Sampues" },
+                                new City { Name = "Majagual" }
+
+                            }
+                        },
+                        new State()
+                        {
+                            Name = "Cordoba",
+                            Cities = new List<City>()
+                            {
+                                new City { Name = "Montería" },
+                                new City { Name = "Chinú" },
+                                new City { Name = "San Bernardo del Viento" },
+                                new City { Name = "Ciénaga de Oro" },
+                                new City { Name = "Tolú" },
+                                new City { Name = "Cereté" },
+                                new City { Name = "Sahagún" },
+                                new City { Name = "San Antero" }
+
+                            }
+                        }
+                    }
+                });
 
                 await _context.SaveChangesAsync();
             }

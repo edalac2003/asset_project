@@ -9,12 +9,7 @@
                 <span class="mdi mdi-menu"></span>
             </button>
             <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item nav-settings d-none d-lg-block">
-                    @*<a class="nav-link" href="#">
-                        <i class="mdi mdi-view-grid"></i>
-                    </a>*@
-                </li>
-                <li class="nav-item dropdown border-left">
+                <li class="nav-item dropdown border-left" hidden>
                     <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                         <i class="mdi mdi-email"></i>
                         <span class="count bg-success"></span>
@@ -55,13 +50,13 @@
                         <p class="p-3 mb-0 text-center">4 new messages</p>
                     </div>
                 </li>
-                <li class="nav-item dropdown border-left">
+                <li class="nav-item dropdown border-left" hidden>
                     <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                         <i class="mdi mdi-bell"></i>
                         <span class="count bg-danger"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                        <h6 class="p-3 mb-0">Notifications</h6>
+                        <h6 class="p-3 mb-0">Notificaciones</h6>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item preview-item">
                             <div class="preview-thumbnail">
@@ -99,7 +94,7 @@
                             </div>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <p class="p-3 mb-0 text-center">See all notifications</p>
+                        <p class="p-3 mb-0 text-center">Ver todas las notificaciones</p>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -111,7 +106,7 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                        <h6 class="p-3 mb-0">Profile</h6>
+                        <h6 class="p-3 mb-0">Mi Perfil</h6>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item preview-item">
                             <div class="preview-thumbnail">
@@ -120,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Settings</p>
+                                <p class="preview-subject mb-1">Ver Perfil</p>
                             </div>
                         </a>
                         <div class="dropdown-divider"></div>
@@ -131,11 +126,9 @@
                                 </div>
                             </div>
                             <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Log out</p>
+                                <p class="preview-subject mb-1">Cerrar Sesión</p>
                             </div>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <p class="p-3 mb-0 text-center">Advanced settings</p>
                     </div>
                 </li>
             </ul>
