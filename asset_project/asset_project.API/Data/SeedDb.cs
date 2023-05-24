@@ -24,6 +24,9 @@ namespace asset_project.API.Data
             await FillStatusTypes();
             await CheckRolesAsync();
             await CheckUserAsync("456789", "Administrador", "administrador", "admin@yopmail.com", "300 123456", "Admin", UserType.Administrador);
+            await CheckUserToRoleAsync("admin@yopmail.com", UserType.Administrador);
+            await CheckUserToRoleAsync("admin@yopmail.com", UserType.Solicitante);
+
         }
 
 
@@ -178,10 +181,18 @@ namespace asset_project.API.Data
                     UserType = userType,
                 };
                 await _userHelper.AddUserAsync(user, "123456");
-                //await _userHelper.AddUserToRoleAsync(user, userType.ToString());
             }
 
             return user;
+        }
+
+        private async Task CheckUserToRoleAsync(string email, UserType userType)
+        {
+            var user = await _userHelper.GetUserAsync(email);
+            if (user != null)
+            {
+                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
+            }
         }
 
     }
