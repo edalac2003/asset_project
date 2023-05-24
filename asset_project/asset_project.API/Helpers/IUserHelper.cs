@@ -1,5 +1,6 @@
 ﻿using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
+using Sales.Shared.DTOs;
 
 namespace asset_project.API.Helpers
 {
@@ -14,5 +15,10 @@ namespace asset_project.API.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginDTO model);
+
+        Task LogoutAsync();
+
     }
 }

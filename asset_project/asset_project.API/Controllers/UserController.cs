@@ -1,12 +1,16 @@
 ﻿using asset_project.API.Data;
 using asset_project.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace asset_project.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/users")]
+
     public class UserController :  ControllerBase
     {
         private readonly DataContext _context;

@@ -13,7 +13,7 @@ namespace Sales.WEB.Auth
             new Claim("FirstName", "Administrador"),
             new Claim("LastName", "administrador"),
             new Claim(ClaimTypes.Name, "admin@yopmail.com"),
-            new Claim(ClaimTypes.Role, "Solicitante")
+            new Claim(ClaimTypes.Role, "Admin")
         },
         authenticationType: "test");
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(adminUser)));
