@@ -9,5 +9,7 @@
         public State? State { get; set; }
 
         public int StateId { get; set; }
+
+        public ICollection<User>? Users { get; set; }
     }
 }
