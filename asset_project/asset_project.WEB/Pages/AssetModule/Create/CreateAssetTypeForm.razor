@@ -12,7 +12,7 @@
 
                         <div class="form-group">
                             <label class="col-form-label">Tipo Activo Fijo</label>
-                        <input type="text" class="form-control" @bind="this.AssetType" />
+                        <input type="text" class="form-control" @bind="this.AssetTypeName" />
                         </div>
                
                 </div>
@@ -29,7 +29,7 @@
                             </select>
                             <div class="row mb-3"></div>
                             <div class="col-lg-12">
-                                <button class="btn btn-primary mr-2" @onclick="SaveTempAsync">Adicionar</button>
+                                <button type="button" class="btn btn-primary mr-2" @onclick="SaveTempAsync">Adicionar</button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                     <div class="col-md-9"></div>
                     <div class="col-md-3 ">
                         <button class="btn btn-dark">Cancelar</button>
-                        <button type="submit" class="btn btn-primary mr-2" @onclick=@(()=>CreateAssetTypeAsync(AssetType))>Guardar</button>
+                        <button type="submit" class="btn btn-primary mr-2" @onclick=@(()=>CreateAssetTypeAsync(AssetTypeName))>Guardar</button>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,8 @@
     private AssetTypeDetail assetTypeDetail = new();
     private List<Property>? properties { get; set; }
     private string ValueProperty = null!;
-    private string AssetType = null!;
+    private string AssetTypeName = null!;
+    private int objectId;
 
     List<string> listpropertiesId = new List<string>();
 
@@ -120,25 +121,41 @@
         listpropertiesId.Remove(Id.ToString());
     }
 
-    private async Task CreateAssetTypeAsync(string x)
+    private async Task CreateAssetTypeAsync(string AssetTypeName)
     {
-        assetType.Name = x;
-        var responseHttp = await repository.Post("/api/assettipyescontroller", assetType);
+        assetType.Name = AssetTypeName;
+        var responseHttp = await repository.Post<AssetType, AssetType>("/api/assettipyescontroller", assetType);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        var objeto = responseHttp.Response;
-        //Console.WriteLine(responseHttp);
-
-        Return();
+        objectId = responseHttp.Response!.Id;
+        if(listpropertiesId == null)
+        {
+            return;
+        }
+        await CreateAssetTypeDetailAsync(objectId);
+        
     }
 
-    private void CreateAssetTypeDetailAsync()
+    private async Task CreateAssetTypeDetailAsync(int objectId)
     {
-        
+        foreach (var propertyId in listpropertiesId!)
+        {
+            assetTypeDetail.AssetTypeId = objectId;
+            assetTypeDetail.PropertyId = Convert.ToInt32(propertyId);
+            var responseHttp = await repository.Post("/api/assettypedetailscontroller", assetTypeDetail);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            
+        }
+        Return();
     }
 
     private void Return()
