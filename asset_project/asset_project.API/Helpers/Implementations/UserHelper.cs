@@ -1,9 +1,10 @@
 ﻿using asset_project.API.Data;
+using asset_project.API.Helpers.Interfaces;
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace asset_project.API.Helpers
+namespace asset_project.API.Helpers.Implementations
 {
     public class UserHelper : IUserHelper
     {
@@ -25,13 +26,13 @@ namespace asset_project.API.Helpers
 
         public async Task AddUserToRoleAsync(User user, string roleName)
         {
-            await _userManager.AddToRoleAsync(user, roleName);  
+            await _userManager.AddToRoleAsync(user, roleName);
         }
 
         public async Task CheckRoleAsync(string roleName)
         {
             bool roleExist = await _roleManager.RoleExistsAsync(roleName);
-            if(!roleExist)
+            if (!roleExist)
             {
                 await _roleManager.CreateAsync(new IdentityRole
                 {

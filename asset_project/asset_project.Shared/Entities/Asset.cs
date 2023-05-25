@@ -25,5 +25,7 @@
         public AssetType? AssetType { get; set; }
 
         public int AssetTypeId { get; set; }
+
+        public List<AssetDetail>? Details { get; set; }
     }
 }

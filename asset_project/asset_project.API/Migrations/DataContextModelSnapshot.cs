@@ -257,18 +257,13 @@ namespace asset_project.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssetId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AssetTypeId")
+                    b.Property<int>("AssetTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
 
                     b.HasIndex("AssetTypeId");
 
@@ -853,15 +848,11 @@ namespace asset_project.API.Migrations
 
             modelBuilder.Entity("asset_project.Shared.Entities.AssetTypeDetail", b =>
                 {
-                    b.HasOne("asset_project.Shared.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                    b.HasOne("asset_project.Shared.Entities.AssetType", "AssetType")
+                        .WithMany("Details")
+                        .HasForeignKey("AssetTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("asset_project.Shared.Entities.AssetType", null)
-                        .WithMany("Details")
-                        .HasForeignKey("AssetTypeId");
 
                     b.HasOne("asset_project.Shared.Entities.Property", "Property")
                         .WithMany()
@@ -869,7 +860,7 @@ namespace asset_project.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Asset");
+                    b.Navigation("AssetType");
 
                     b.Navigation("Property");
                 });
@@ -991,7 +982,14 @@ namespace asset_project.API.Migrations
                     b.Navigation("WorkOrder");
                 });
 
+            modelBuilder.Entity("asset_project.Shared.Entities.AssetType", b =>
                 {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("asset_project.Shared.Entities.City", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("asset_project.Shared.Entities.Country", b =>

@@ -6,6 +6,6 @@
 
         public string Name { get; set; } = null!;
 
-        public ICollection<AssetTypeDetail>? Details { get; set; }
+        public ICollection<AssetTypeDetail>? Properties { get; set; }
     }
 }

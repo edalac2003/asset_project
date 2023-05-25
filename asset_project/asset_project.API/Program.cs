@@ -1,5 +1,6 @@
 using asset_project.API.Data;
-using asset_project.API.Helpers;
+using asset_project.API.Helpers.Implementations;
+using asset_project.API.Helpers.Interfaces;
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<IAssetHelper, AssetHelper>();
 
 var app = builder.Build();
 SeedData(app);

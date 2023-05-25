@@ -1,7 +1,7 @@
 ﻿using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace asset_project.API.Helpers
+namespace asset_project.API.Helpers.Interfaces
 {
     public interface IUserHelper
     {

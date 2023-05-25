@@ -12,8 +12,8 @@ using asset_project.API.Data;
 namespace asset_project.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230523234457_Users")]
-    partial class Users
+    [Migration("20230524044101_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,16 +245,34 @@ namespace asset_project.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("AssetTypes");
+                });
+
+            modelBuilder.Entity("asset_project.Shared.Entities.AssetTypeDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("AssetTypeId");
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("AssetTypes");
+                    b.ToTable("AssetTypeDetail");
                 });
 
             modelBuilder.Entity("asset_project.Shared.Entities.Category", b =>
@@ -831,13 +849,21 @@ namespace asset_project.API.Migrations
                     b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("asset_project.Shared.Entities.AssetType", b =>
+            modelBuilder.Entity("asset_project.Shared.Entities.AssetTypeDetail", b =>
                 {
+                    b.HasOne("asset_project.Shared.Entities.AssetType", "AssetType")
+                        .WithMany("Details")
+                        .HasForeignKey("AssetTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("asset_project.Shared.Entities.Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssetType");
 
                     b.Navigation("Property");
                 });
@@ -957,6 +983,11 @@ namespace asset_project.API.Migrations
                         .IsRequired();
 
                     b.Navigation("WorkOrder");
+                });
+
+            modelBuilder.Entity("asset_project.Shared.Entities.AssetType", b =>
+                {
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("asset_project.Shared.Entities.City", b =>
