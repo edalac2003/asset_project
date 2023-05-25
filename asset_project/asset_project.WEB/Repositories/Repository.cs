@@ -77,7 +77,6 @@ namespace asset_project.WEB.Repositories
             }
             return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
-
-
+        
     }
 }
