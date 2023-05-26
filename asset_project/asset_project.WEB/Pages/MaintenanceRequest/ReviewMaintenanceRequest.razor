@@ -1,4 +1,8 @@
 ﻿@page "/maintenance/review"
+@using System.Net;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
 
 <div class="col-lg-12 grid-margin">
     <div class="card col-lg-12 mx-auto">
@@ -28,77 +32,29 @@
                                             <table class="table table-sm">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width:15%">Fecha</th>
+                                                        <th style="width:15%">Fecha registro</th>
                                                         <th style="width:20%">Código Activo</th>
-                                                        <th style="width:55%">Activo Fijo</th>
+                                                        <th style="width:45%">Activo Fijo</th>
+                                                        <th style="width:15%">Estado</th>
                                                         <th style="width:10%"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>15/02/2023</td>
-                                                        <td>ACT-0000012345</td>
-                                                        <td>CPU Intel Core i5</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>02/03/2023</td>
-                                                        <td>ACT-000000099</td>
-                                                        <td>Aire Acondicionado Samsung</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15/02/2023</td>
-                                                        <td>ACT-0000096000</td>
-                                                        <td>Silla de escritorio gerencia</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15/02/2023</td>
-                                                        <td>ACT-0000002455</td>
-                                                        <td>Escritorio para computador</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15/02/2023</td>
-                                                        <td>ACT-0000012345</td>
-                                                        <td>CPU Intel Core i5</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>02/03/2023</td>
-                                                        <td>ACT-000000099</td>
-                                                        <td>Aire Acondicionado Samsung</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15/02/2023</td>
-                                                        <td>ACT-0000096000</td>
-                                                        <td>Silla de escritorio gerencia</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15/02/2023</td>
-                                                        <td>ACT-0000002455</td>
-                                                        <td>Escritorio para computador</td>
-                                                        <td>
-                                                            <button class="btn btn-outline-secondary">Detalle</button>
-                                                        </td>
-                                                    </tr>
+                                                    @if (listMaintenance != null)
+                                                    {
+                                                        @foreach (var maintenance in listMaintenance!)
+                                                        {
+                                                            <tr>
+                                                                <td><small>@maintenance.RegisterDate</small> </td>
+                                                                <td><small>@maintenance.Asset!.Code</small></td>
+                                                                <td><small>@maintenance.Asset!.AssetType?.Name</small></td>
+                                                                <td><small>@maintenance.StatusType?.Name</small></td>
+                                                                <td>
+                                                                    <button class="btn btn-outline-secondary" @onclick=@(() => viewDetail(maintenance.Id))>Detalle</button>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
@@ -114,5 +70,35 @@
 </div>
 
 @code {
+    private List<MaintenanceRequest>? listMaintenance = null!;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMaintenanceRequest();
+    }
+
+    private async Task LoadMaintenanceRequest()
+    {
+        var responseHttp = await repository.GetAsync<List<MaintenanceRequest>>("/api/MaintenanceRequest/FindAll");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/");
+            }
+
+            var message = await responseHttp.GetErrorMessageAsync();
+            //await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        listMaintenance = responseHttp.Response!;
+    }
+
+
+
+    private void viewDetail(int id)
+    {
+        navigationManager.NavigateTo($"/maintenance/edit/{id}");
+    }
 }

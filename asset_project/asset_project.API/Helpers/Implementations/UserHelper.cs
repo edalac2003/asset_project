@@ -1,10 +1,11 @@
 ﻿using asset_project.API.Data;
+using asset_project.API.Helpers.Interfaces;
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using asset_project.Shared.DTOs;
 
-namespace asset_project.API.Helpers
+namespace asset_project.API.Helpers.Implementations
 {
     public class UserHelper : IUserHelper
     {
