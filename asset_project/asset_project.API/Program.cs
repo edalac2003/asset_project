@@ -65,6 +65,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IAssetHelper, AssetHelper>();
+builder.Services.AddScoped<IStatusTypeHelper, StatusTypeHelper>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters

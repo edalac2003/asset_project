@@ -1,0 +1,32 @@
+﻿
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <button class="btn btn-outline-primary" type="submit">Guardar</button>
+    <button class="btn btn-outline-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>
+
+
+@code {
+    private EditContext? editContext = null;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        return;
+    }
+
+    private async Task AssetChangedAsync(ChangeEventArgs e)
+    {
+    }
+}

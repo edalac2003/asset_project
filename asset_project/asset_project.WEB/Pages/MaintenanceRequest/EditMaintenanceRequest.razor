@@ -1,0 +1,103 @@
+﻿@page "/maintenance/edit/{MaintenanceRequestId:int}"
+
+@inject NavigationManager navigationManager
+@inject IRepository repository
+
+
+<div class="col-lg-12 grid-margin">
+    <div class="card col-lg-12 mx-auto">
+        <div class="card-body px-5 py-2">
+            <h4 class="card-title">Registro Solicitudes de Mantenimiento </h4>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label>Fecha</label>
+                                    <input type="date" class="form-control" @bind-value="MaintenanceRequest.RegisterDate" readonly />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label>Solicitante</label>
+                                    <input class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="my-2"></div>
+                            <AssetDetails Asset="@MaintenanceRequest.Asset"></AssetDetails>
+
+                            <div class="row mt-4">
+                                <div class="col-lg-12">
+                                    <label>Justificación</label>
+                                    <div style="width:100%">
+                                        <input type="text" class="form-control" multiple @bind-value="MaintenanceRequest.Justification" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-lg-12">
+                                    <label>Observaciones</label>
+                                    <div style="width:100%">
+                                        <input type="text" class="form-control" multiple @bind-value="MaintenanceRequest.Notes" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                </div>
+
+                <div class="row my-3">
+                    <div>
+                        <button class="btn btn-outline-warning" @onclick="Return">Cancelar</button>
+                        <button class="btn btn-outline-danger" @onclick="RejectMaintenanceRequestAsync">Rechazar</button>
+                        <button class="btn btn-outline-success" @onclick="ApproveMaintenanceRequestAsync">Aprobar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private MaintenanceRequest? MaintenanceRequest;
+
+    [Parameter]
+    public int MaintenanceRequestId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMaintenanceRequestAsync();
+    }
+
+    private async Task LoadMaintenanceRequestAsync()
+    {
+        var httpResponse = await repository.GetAsync<MaintenanceRequest>("/api/MaintenanceRequest/GetMaintenanceRequestById/" + MaintenanceRequestId);
+        MaintenanceRequest = httpResponse.Response;
+    }
+
+    private async Task ApproveMaintenanceRequestAsync()
+    {
+        MaintenanceRequest!.StatusTypeId = ((int)StatusTypeEnum.ASIGNADA);
+        await UpdateMaintenanceRequest(MaintenanceRequest);
+
+    }
+
+    private async Task RejectMaintenanceRequestAsync()
+    {
+        MaintenanceRequest!.StatusTypeId = ((int)StatusTypeEnum.RECHAZADA);
+
+        await UpdateMaintenanceRequest(MaintenanceRequest);
+    }
+
+    private async Task UpdateMaintenanceRequest(MaintenanceRequest maintenanceRequest)
+    {
+        await repository.PutAsync<MaintenanceRequest>("/api/MaintenanceRequest", maintenanceRequest);
+        Return();
+    }
+
+    private void Return() => navigationManager.NavigateTo($"/maintenance/review");
+}
