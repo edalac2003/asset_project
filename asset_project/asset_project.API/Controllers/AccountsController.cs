@@ -1,8 +1,8 @@
 ﻿using asset_project.API.Helpers;
+using asset_project.Shared.DTOs;
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using asset_project.Shared.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -22,7 +22,7 @@ namespace asset_project.API.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("CreateUser")]
+        [HttpPost("[Action]")]
         public async Task<ActionResult> CreateUser([FromBody] UserDTO model)
         {
             User user = model;
@@ -35,6 +35,7 @@ namespace asset_project.API.Controllers
 
             return BadRequest(result.Errors.FirstOrDefault());
         }
+
 
         [HttpPost("Login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO model)
@@ -79,7 +80,5 @@ namespace asset_project.API.Controllers
                 Expiration = expiration
             };
         }
-
-
     }
 }
