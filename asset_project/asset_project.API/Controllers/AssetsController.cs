@@ -1,5 +1,5 @@
 ﻿using asset_project.API.Helpers.Interfaces;
-using asset_project.Shared.DTO;
+using asset_project.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace asset_project.API.Controllers

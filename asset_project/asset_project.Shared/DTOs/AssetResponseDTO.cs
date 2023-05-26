@@ -1,6 +1,6 @@
 ﻿using asset_project.Shared.Entities;
 
-namespace asset_project.Shared.DTO
+namespace asset_project.Shared.DTOs
 {
     public class AssetResponseDTO
     {
