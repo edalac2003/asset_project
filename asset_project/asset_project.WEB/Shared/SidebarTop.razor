@@ -97,6 +97,8 @@
                         <p class="p-3 mb-0 text-center">Ver todas las notificaciones</p>
                     </div>
                 </li>
+                <AuthorizeView>
+                <Authorized>
                 <li class="nav-item dropdown">
                     <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                         <div class="navbar-profile">
@@ -119,7 +121,7 @@
                             </div>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
+                        <a href="Logout" class="dropdown-item preview-item">
                             <div class="preview-thumbnail">
                                 <div class="preview-icon bg-dark rounded-circle">
                                     <i class="mdi mdi-logout text-danger"></i>
@@ -131,6 +133,17 @@
                         </a>
                     </div>
                 </li>
+                </Authorized>
+                    <Authorized>
+                        <span>Hola, @context.User.Identity!.Name</span>
+                        <a href="Logout" class="nav-link btn btn-link">Cerrar Sesión</a>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="user/register" class="nav-link btn btn-link">Registro</a>
+                        <a href="Login" class="nav-link btn btn-link">Iniciar Sesión</a>
+                    </NotAuthorized>
+
+                </AuthorizeView>
             </ul>
             <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                 <span class="mdi mdi-format-line-spacing"></span>

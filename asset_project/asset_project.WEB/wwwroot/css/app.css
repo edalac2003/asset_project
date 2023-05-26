@@ -109,3 +109,18 @@ a, .btn-link {
 .table-wrapper-scroll-y {
     display: block;
 }
+
+.form-control {
+    background-color: #2A3038 !important;
+    color: #495057 !important;
+}
+
+.form-control:disabled {
+    background-color: #2A3038 !important;
+    color: #495057 !important;
+}
+
+.form-control[readonly] {
+    background-color: #2A3038  !important;
+    color: #495057 !important;
+}

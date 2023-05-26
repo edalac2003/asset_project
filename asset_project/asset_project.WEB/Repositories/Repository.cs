@@ -3,19 +3,27 @@ using System.Text;
 
 namespace asset_project.WEB.Repositories
 {
-    public class Repository : IRepository
+    public class Repository: IRepository
     {
         private readonly HttpClient _httpClient;
+
         private JsonSerializerOptions _jsonDefaultOptions => new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
         };
+
         public Repository(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<HttpResponseWrapper<T>> Get<T>(string url)
+        public async Task<HttpResponseWrapper<object>> Get(string url)
+        {
+            var responseHTTP = await _httpClient.GetAsync(url);
+            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
+        }
+
+        public async Task<HttpResponseWrapper<T>> GetAsync<T>(string url)
         {
             var responseHttp = await _httpClient.GetAsync(url);
             if (responseHttp.IsSuccessStatusCode)
@@ -23,6 +31,7 @@ namespace asset_project.WEB.Repositories
                 var response = await UnserializeAnswer<T>(responseHttp, _jsonDefaultOptions);
                 return new HttpResponseWrapper<T>(response, false, responseHttp);
             }
+
             return new HttpResponseWrapper<T>(default, true, responseHttp);
         }
         public async Task<HttpResponseWrapper<object>> Post<T>(string url, T model)
@@ -32,7 +41,8 @@ namespace asset_project.WEB.Repositories
             var responseHttp = await _httpClient.PostAsync(url, messageContet);
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
-        public async Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T model)
+
+        public async Task<HttpResponseWrapper<TResponse>> PostAsync<T, TResponse>(string url, T model)
         {
             var messageJSON = JsonSerializer.Serialize(model);
             var messageContet = new StringContent(messageJSON, Encoding.UTF8, "application/json");
@@ -75,8 +85,16 @@ namespace asset_project.WEB.Repositories
                 var response = await UnserializeAnswer<TResponse>(responseHttp, _jsonDefaultOptions);
                 return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
             }
+
             return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
-        
+
+        private async Task<T> UnserializeAnswer<T>(HttpResponseMessage httpResponse, JsonSerializerOptions jsonSerializerOptions)
+        {
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(responseString, jsonSerializerOptions)!;
+        }
+
     }
+
 }

@@ -1,0 +1,51 @@
+﻿
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-3">
+            <small>Nombre</small>
+            <div>
+                <small class="text-muted">@Asset?.AssetType?.Name</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <small>Código</small>
+            <div>
+                <small class="text-muted">@Asset?.Code</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <small>Categoría</small>
+            <div>
+                <small class="text-muted">@Asset?.Category?.Name</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <small>Ubicación</small>
+            <div>
+                <small class="text-muted">@Asset?.Location</small>
+            </div>
+        </div>
+    </div>
+    <div class="my-2"></div>
+    @* Propiedades Particulares *@
+    <p class="card-description">Detalle</p>
+    <div class="row mx-2">
+        <table class="table table-sm">
+            <tbody>
+                @foreach (var prop in Asset?.Details!)
+                {
+                    <tr>
+                        <td><small>@prop?.Property!.Name</small> </td>
+                        <td><small>@prop?.Value</small></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public Asset? Asset { get; set; } = null!;
+}
