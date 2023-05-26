@@ -31,6 +31,8 @@
                     <span class="menu-title">Gestión usuarios</span>
                 </NavLink>
             </li>
+            <AuthorizeView Roles="Administrador">
+                <Authorized>
             <li class="nav-item menu-items">
                 <a class="nav-link" data-toggle="collapse" href="#ui-assetManagement" aria-expanded="false" aria-controls="ui-assetManagement">
                     <span class="menu-icon">
@@ -64,6 +66,8 @@
                     </ul>
                 </div>
             </li>
+            </Authorized>
+            </AuthorizeView>
             <li class="nav-item menu-items">
                 <a class="nav-link" data-toggle="collapse" href="#ui-maintenance" aria-expanded="false" aria-controls="ui-maintenance">
                     <span class="menu-icon">
