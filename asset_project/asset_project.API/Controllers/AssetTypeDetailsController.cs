@@ -26,6 +26,18 @@ namespace asset_project.API.Controllers
 
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetAsync(int id)
+        {
+            var queryable = _context.AssetTypeDetail.AsQueryable();
+            queryable = queryable.Where(x => x.AssetTypeId == id);            
+            if (queryable == null)
+            {
+                return NotFound();
+            }
+            return Ok(await queryable.ToListAsync());
+        }
+
         [HttpPost]
 
         public async Task<ActionResult> PostAsync(AssetTypeDetail assetTypeDetail)

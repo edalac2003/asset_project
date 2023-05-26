@@ -39,6 +39,8 @@ namespace asset_project.API.Data
 
         public DbSet<Schedule> Schedules { get; set; }
 
+        public DbSet<AssetTypeDetail> AssetTypeDetail { get; set; }
+
         public DbSet<WorkOrder> WorkOrders { get; set; }
 
         public DbSet<WorkOrderDetail> WorkOrderDetails { get; set; }
@@ -63,6 +65,7 @@ namespace asset_project.API.Data
             modelBuilder.Entity<Schedule>().HasIndex(s => s.Id);                   
             modelBuilder.Entity<WorkOrder>().HasIndex(w => w.Id);
             modelBuilder.Entity<WorkOrderDetail>().HasIndex(wd => wd.Id);
+            modelBuilder.Entity<AssetTypeDetail>().HasIndex(at => at.AssetTypeId);
 
         }
     }
