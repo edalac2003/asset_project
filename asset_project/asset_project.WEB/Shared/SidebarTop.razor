@@ -97,50 +97,50 @@
                         <p class="p-3 mb-0 text-center">Ver todas las notificaciones</p>
                     </div>
                 </li>
-                <AuthorizeView>
-                <Authorized>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-                        <div class="navbar-profile">
-                            <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
-                            <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
-                            <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                        </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                        <h6 class="p-3 mb-0">Mi Perfil</h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="mdi mdi-settings text-success"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Ver Perfil</p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="Logout" class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="mdi mdi-logout text-danger"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Cerrar Sesión</p>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                </Authorized>
+                <AuthorizeView Roles="Administrador, Coordinador, Solicitante, Asistente, Tecnico, Gerente">
                     <Authorized>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                                <div class="navbar-profile">
+                                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@context.User.Identity!.Name</p>
+                                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                                <h6 class="p-3 mb-0">Mi Perfil</h6>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-settings text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Ver Perfil</p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="Logout" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-logout text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p onclick="/Logout" class="preview-subject mb-1">Cerrar Sesión</p>
+                                        @*<a href="Logout" class="preview-subject mb-1">Cerrar Sesión</a>*@
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </Authorized>
+                    @*<Authorized>
                         <span>Hola, @context.User.Identity!.Name</span>
                         <a href="Logout" class="nav-link btn btn-link">Cerrar Sesión</a>
-                    </Authorized>
+                    </Authorized>*@
                     <NotAuthorized>
-                        <a href="user/register" class="nav-link btn btn-link">Registro</a>
-                        <a href="Login" class="nav-link btn btn-link">Iniciar Sesión</a>
+                        <a href="Login" class="btn btn-outline-success">Iniciar Sesión</a>
                     </NotAuthorized>
 
                 </AuthorizeView>
