@@ -21,6 +21,7 @@
     [Parameter]
     public EventCallback ReturnAction { get; set; }
 
+
     private async Task OnBeforeInternalNavigation(LocationChangingContext context)
     {
         return;
@@ -28,5 +29,6 @@
 
     private async Task AssetChangedAsync(ChangeEventArgs e)
     {
+        return;
     }
 }

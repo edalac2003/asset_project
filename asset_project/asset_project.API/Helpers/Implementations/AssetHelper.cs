@@ -1,6 +1,6 @@
 ﻿using asset_project.API.Data;
 using asset_project.API.Helpers.Interfaces;
-using asset_project.Shared.DTO;
+using asset_project.Shared.DTOs;
 using asset_project.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 

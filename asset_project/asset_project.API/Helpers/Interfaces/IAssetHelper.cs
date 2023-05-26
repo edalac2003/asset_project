@@ -1,4 +1,4 @@
-﻿using asset_project.Shared.DTO;
+﻿using asset_project.Shared.DTOs;
 using asset_project.Shared.Entities;
 
 namespace asset_project.API.Helpers.Interfaces
