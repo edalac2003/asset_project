@@ -4,13 +4,13 @@
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 
-<h3>Registrar Nuevo Usuario</h3>
 
 <EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
     <DataAnnotationsValidator />
 
-    <div class="row">
-        <div class="col-6">
+    <div class="row mx-3  mt-2">
+        <h4>Registrar Nuevo Usuario</h4>
+        <div class="col-6 mt-3">
             <div class="mb-3">
                 <label>Nombres:</label>
                 <div>
@@ -54,11 +54,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-6 mt-3">
             <div class="mb-3">
                 <label>País:</label>
                 <div>
-                    <select class="form-select" @onchange="CountryChangedAsync">
+                    <select class="form-control form-select" @onchange="CountryChangedAsync">
                         <option value="0">-- Seleccione un país --</option>
                         @if (countries is not null)
                         {
@@ -73,7 +73,7 @@
             <div class="mb-3">
                 <label>Estado/Departamento:</label>
                 <div>
-                    <select class="form-select" @onchange="StateChangedAsync">
+                    <select class="form-control form-select" @onchange="StateChangedAsync">
                         <option value="0">-- Seleccione un estado/departamento --</option>
                         @if (states is not null)
                         {
@@ -88,7 +88,7 @@
             <div class="mb-3">
                 <label>Ciudad:</label>
                 <div>
-                    <select class="form-select" @bind="userDTO.CityId">
+                    <select class="form-control form-select" @bind="userDTO.CityId">
                         <option value="0">-- Seleccione una ciudad --</option>
                         @if (cities is not null)
                         {
@@ -124,8 +124,11 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <button class="btn btn-outline-danger" @onclick="Return">Cancelar</button>
+            <button class="btn btn-outline-success" type="submit">Registrar</button>
+        </div>
     </div>
-    <button class="btn btn-primary" type="submit">Registrar</button>
 </EditForm>
 
 @code {
@@ -206,4 +209,6 @@
         await sweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
         navigationManager.NavigateTo("/");
     }
+
+    private void Return() => navigationManager.NavigateTo($"/");
 }
