@@ -2,7 +2,6 @@
 using asset_project.API.Helpers.Interfaces;
 using asset_project.Shared.DTO;
 using asset_project.Shared.Entities;
-using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace asset_project.API.Helpers.Implementations
@@ -32,7 +31,7 @@ namespace asset_project.API.Helpers.Implementations
                 .Where(a => a.Responsible.Equals(userId))
                 .ToListAsync();
 
-                AssetResponseDTO response = new AssetResponseDTO()
+                AssetResponseDTO response = new ()
                 {
                     User = user,
                     assets = await querable

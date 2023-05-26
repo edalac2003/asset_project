@@ -28,6 +28,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IAssetHelper, AssetHelper>();
+builder.Services.AddScoped<IStatusTypeHelper, StatusTypeHelper>();
 
 var app = builder.Build();
 SeedData(app);
