@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using asset_project.Shared.DTOs;
 
-namespace asset_project.API.Helpers
+namespace asset_project.API.Helpers.Interfaces
 {
     public interface IUserHelper
     {

@@ -1,5 +1,6 @@
 using asset_project.API.Data;
-using asset_project.API.Helpers;
+using asset_project.API.Helpers.Implementations;
+using asset_project.API.Helpers.Interfaces;
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +64,8 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<IAssetHelper, AssetHelper>();
+builder.Services.AddScoped<IStatusTypeHelper, StatusTypeHelper>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters

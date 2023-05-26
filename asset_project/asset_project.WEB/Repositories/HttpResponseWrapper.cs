@@ -2,7 +2,6 @@
 
 namespace asset_project.WEB.Repositories
 {
-
     public class HttpResponseWrapper<T>
     {
         public HttpResponseWrapper(T? response, bool error, HttpResponseMessage httpResponseMessage)

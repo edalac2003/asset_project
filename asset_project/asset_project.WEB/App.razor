@@ -1,5 +1,6 @@
 ﻿@using asset_project.WEB.Pages.Login;
 
+<CascadingBlazoredModal Position="ModalPosition.Middle" Size="ModalSize.Large" HideHeader="true" DisableBackgroundCancel="true" AnimationType="ModalAnimationType.FadeInOut">
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -15,3 +16,4 @@
 
     </NotFound>
 </Router>
+</CascadingBlazoredModal>

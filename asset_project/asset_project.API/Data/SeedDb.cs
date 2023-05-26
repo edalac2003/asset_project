@@ -1,4 +1,4 @@
-﻿using asset_project.API.Helpers;
+﻿using asset_project.API.Helpers.Interfaces;
 using asset_project.Shared.Entities;
 using asset_project.Shared.Enums;
 
@@ -73,17 +73,17 @@ namespace asset_project.API.Data
         {
             if (!_context.StatusTypes.Any())
             {
-                _context.StatusTypes.Add(new StatusType { Name = "Registrada", MaintenanceRequest = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Rechazada", MaintenanceRequest = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Asignada", MaintenanceRequest = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Finalizada", MaintenanceRequest = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Creada", WorkOrder = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Asignada a técnico", WorkOrder = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Asignada a proveedor", WorkOrder = true });
-                _context.StatusTypes.Add(new StatusType { Name = "En ejecución", WorkOrder = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Pendiente Insumo", WorkOrder = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Terminada", WorkOrder = true });
-                _context.StatusTypes.Add(new StatusType { Name = "Aprobada", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Registrada", MaintenanceRequest = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Rechazada", MaintenanceRequest = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Asignada", MaintenanceRequest = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Finalizada", MaintenanceRequest = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Creada", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Asignada a técnico", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Asignada a proveedor", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "En ejecución", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Pendiente Insumo", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Terminada", WorkOrder = true });
+                _context.StatusTypes.Add(new Shared.Entities.StatusType { Name = "Aprobada", WorkOrder = true });
                 await _context.SaveChangesAsync();
             }
         }
