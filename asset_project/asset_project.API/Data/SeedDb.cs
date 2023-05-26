@@ -23,7 +23,7 @@ namespace asset_project.API.Data
             await FillNotificationTypes();
             await FillStatusTypes();
             await CheckRolesAsync();
-            await CheckUserAsync("456789", "Administrador", "administrador", "admin@yopmail.com", "300 123456", "Admin", UserType.Administrador);
+            await CheckUserAsync("456789", "Administrador", "administrador", "admin@yopmail.com", "300 123456", "Administrador", UserType.Administrador);
             await CheckUserToRoleAsync("admin@yopmail.com", UserType.Administrador);
             await CheckUserToRoleAsync("admin@yopmail.com", UserType.Solicitante);
 

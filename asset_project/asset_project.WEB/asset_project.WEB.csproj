@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Shared\AuthLinks.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CurrieTechnologies.Razor.SweetAlert2" Version="5.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.5" />
@@ -26,18 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\asset_project.Shared\asset_project.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Shared\AuthLinks.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Shared\AuthLinks.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Shared\AuthLinks.razor" />
   </ItemGroup>
 
 </Project>

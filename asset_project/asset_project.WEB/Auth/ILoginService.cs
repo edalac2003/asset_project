@@ -1,4 +1,4 @@
-﻿namespace asset_project.WEB.Pages.Auth
+﻿namespace asset_project.WEB.Auth
 {
     public interface ILoginService
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace Sales.WEB.Auth
+namespace asset_project.WEB.Auth
 {
     public class AuthenticationProviderTest : AuthenticationStateProvider
     {

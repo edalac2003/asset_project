@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace Sales.WEB.Helpers
+namespace asset_project.WEB.Helpers
 {
     public static class IJSRuntimeExtensionMethods
     {

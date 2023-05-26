@@ -2,7 +2,7 @@
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Sales.Shared.DTOs;
+using asset_project.Shared.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

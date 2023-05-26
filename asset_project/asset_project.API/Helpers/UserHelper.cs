@@ -2,7 +2,7 @@
 using asset_project.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Sales.Shared.DTOs;
+using asset_project.Shared.DTOs;
 
 namespace asset_project.API.Helpers
 {

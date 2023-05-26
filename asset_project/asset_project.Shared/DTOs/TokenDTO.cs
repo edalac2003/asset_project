@@ -1,4 +1,4 @@
-﻿namespace Sales.Shared.DTOs
+﻿namespace asset_project.Shared.DTOs
 {
     public class TokenDTO
     {

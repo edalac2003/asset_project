@@ -1,0 +1,137 @@
+﻿@page "/user/register"
+@inject NavigationManager navigationManager
+
+<EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Registro de Personas</h4>
+            <form class="form-sample">
+                <p class="card-description"> Personal info </p>
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Nombres</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.FirstName" />
+                                <ValidationMessage For="@(() => userDTO.FirstName)" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Apellidos</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.LastName" />
+                                <ValidationMessage For="@(() => userDTO.LastName)" />
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Número de Identificación</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.Document" />
+                                <ValidationMessage For="@(() => userDTO.Document)" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Número de Teléfono</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.PhoneNumber" />
+                                <ValidationMessage For="@(() => userDTO.PhoneNumber)" />
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                                <label class="col-form-label">Dirección</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.Address" />
+                                <ValidationMessage For="@(() => userDTO.Address)" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Email</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.Email" />
+                                <ValidationMessage For="@(() => userDTO.Email)" />
+
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Ciudad</label>
+                                <InputNumber class="form-control" @bind-Value="@userDTO.CityId" />
+                                <ValidationMessage For="@(() => userDTO.CityId)" />
+                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Foto</label>
+                                <InputText class="form-control" @bind-Value="@userDTO.Photo" />
+                                <ValidationMessage For="@(() => userDTO.Photo)" />
+                            </div>
+                    </div>
+                </div>
+                    <p class="card-description"> Contraseña </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                                <label class="col-form-label">Contraseña</label>
+                                <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" />
+                                <ValidationMessage For="@(() => userDTO.Password)" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                                <label class="col-form-label">Confirmar Contraseña</label>
+                                <InputText type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" />
+                                <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                        </div>
+                    </div>
+                </div>
+                <p class="card-description"> Información del usuario</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6 ">
+                        <button class="btn btn-dark">Cancelar</button>
+                        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</EditForm>
+
+@code {
+    private UserDTO userDTO = new();
+
+    private async Task CreteUserAsync()
+    {
+
+    }
+}
