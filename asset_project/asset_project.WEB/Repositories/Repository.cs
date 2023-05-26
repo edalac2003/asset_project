@@ -34,11 +34,10 @@ namespace asset_project.WEB.Repositories
 
             return new HttpResponseWrapper<T>(default, true, responseHttp);
         }
-
-        public async Task<HttpResponseWrapper<object>> PostAsync<T>(string url, T model)
+        public async Task<HttpResponseWrapper<object>> Post<T>(string url, T model)
         {
-            var mesageJSON = JsonSerializer.Serialize(model);
-            var messageContet = new StringContent(mesageJSON, Encoding.UTF8, "application/json");
+            var messageJSON = JsonSerializer.Serialize(model);
+            var messageContet = new StringContent(messageJSON, Encoding.UTF8, "application/json");
             var responseHttp = await _httpClient.PostAsync(url, messageContet);
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
@@ -55,14 +54,20 @@ namespace asset_project.WEB.Repositories
             }
             return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
+        private async Task<T> UnserializeAnswer<T>(HttpResponseMessage httpResponse, JsonSerializerOptions
+        jsonSerializerOptions)
+        {
+            var respuestaString = await httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(respuestaString, jsonSerializerOptions)!;
+        }
 
-        public async Task<HttpResponseWrapper<object>> DeleteAsync(string url)
+        public async Task<HttpResponseWrapper<object>> Delete(string url)
         {
             var responseHTTP = await _httpClient.DeleteAsync(url);
             return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
         }
 
-        public async Task<HttpResponseWrapper<object>> PutAsync<T>(string url, T model)
+        public async Task<HttpResponseWrapper<object>> Put<T>(string url, T model)
         {
             var messageJSON = JsonSerializer.Serialize(model);
             var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
@@ -70,7 +75,7 @@ namespace asset_project.WEB.Repositories
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
 
-        public async Task<HttpResponseWrapper<TResponse>> PutAsync<T, TResponse>(string url, T model)
+        public async Task<HttpResponseWrapper<TResponse>> Put<T, TResponse>(string url, T model)
         {
             var messageJSON = JsonSerializer.Serialize(model);
             var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
