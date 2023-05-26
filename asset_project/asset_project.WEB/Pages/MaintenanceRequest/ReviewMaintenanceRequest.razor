@@ -7,10 +7,10 @@
 <div class="col-lg-12 grid-margin">
     <div class="card col-lg-12 mx-auto">
         <div class="card-body px-2 py-2">
-            <h4 class="card-title">Registro Solicitudes de Mantenimiento </h4>
             <form class="form-sample">
                 <div class="container">
                     <div class="row">
+                        <h4 class="card-title">Registro Solicitudes de Mantenimiento </h4>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <div class="row mt-2">
@@ -71,15 +71,22 @@
 
 @code {
     private List<MaintenanceRequest>? listMaintenance = null!;
+    private string userName = string.Empty;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
+        var authenticationState = await authenticationStateTask;
+        var claims = authenticationState.User.Claims.ToList();
+        userName = authenticationState.User.Identity!.Name;
         await LoadMaintenanceRequest();
     }
 
     private async Task LoadMaintenanceRequest()
     {
-        var responseHttp = await repository.GetAsync<List<MaintenanceRequest>>("/api/MaintenanceRequest/FindAll");
+        var responseHttp = await repository.GetAsync<List<MaintenanceRequest>>($"/api/MaintenanceRequest/FindAll/{userName}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

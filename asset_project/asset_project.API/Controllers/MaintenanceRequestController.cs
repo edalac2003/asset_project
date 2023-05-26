@@ -60,7 +60,7 @@ namespace asset_project.API.Controllers
             MaintenanceRequest MaintenanceRequest = new MaintenanceRequest()
             {
                 RegisterDate = maintenanceRequest.RegisterDate,
-                UserName = maintenanceRequest.UserName,
+                UserName = User.UserName,
                 Asset = Asset,
                 Justification = maintenanceRequest.Justification,
                 StatusTypeId = ((int)StatusTypeEnum.REGISTRADA)
@@ -118,6 +118,18 @@ namespace asset_project.API.Controllers
                 .Include(x => x.Asset).ThenInclude(x => x.AssetType)
                 .Include(m => m.Asset).ThenInclude(c => c.Category)
                 .Include(a => a.Asset).ThenInclude(x => x.Details)
+                .ToListAsync();
+        }
+
+        [HttpGet("[action]/{userName}")]
+        public async Task<List<MaintenanceRequest>> FindAll(string userName)
+        {
+            return await _context.MaintenanceRequests
+                .Include(s => s.StatusType)
+                .Include(x => x.Asset).ThenInclude(x => x.AssetType)
+                .Include(m => m.Asset).ThenInclude(c => c.Category)
+                .Include(a => a.Asset).ThenInclude(x => x.Details)
+                .Where(x => x.UserName == userName)
                 .ToListAsync();
         }
 
