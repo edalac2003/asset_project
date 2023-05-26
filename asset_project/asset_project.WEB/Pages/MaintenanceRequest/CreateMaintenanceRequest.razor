@@ -2,6 +2,7 @@
 
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
+@inject IRepository repository
 
 <div class="col-lg-12 grid-margin">
     <div class="card col-lg-12 mx-auto">
@@ -15,7 +16,7 @@
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <label>Fecha</label>
-                                        <input type="date" class="form-control"  />
+                                        <input type="date" class="form-control" @bind-value="@DateNow" />
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -25,80 +26,75 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Activo fijo</label>
-                                        <select class="form-control">
-                                            <option value="1">Activo Fijo 1</option>
-                                            <option value="1">Activo Fijo 2</option>
-                                            <option value="1">Activo Fijo 3</option>
-                                            <option value="1">Activo Fijo 4</option>
+                                        <select class="form-control" @onchange="AssetChangedAsync">
+                                            <option value="0">-- Seleccione un Activo fijo --</option>
+                                            @if (responseInitialLoad is not null)
+                                            {
+                                                @foreach (var activo in responseInitialLoad!.assets!)
+                                                {
+                                                    <option value=@activo.Id>@activo.Code</option>
+                                                }
+                                            }
                                         </select>
                                     </div>
                                 </div>
                                 <div class="my-2"></div>
-                                @* INICIO resumen del activo fijo *@                                
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <small>Nombre</small>
-                                            <div>
-                                                <small class="text-muted">NOMBRE DEL ACTIVO FIJO</small>
+                                @* INICIO resumen del activo fijo *@
+                                @if (assetDetailResponse != null)
+                                {
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <small>Nombre</small>
+                                                <div>
+                                                    <small class="text-muted">@assetDetailResponse?.AssetType?.Name</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <small>Código</small>
+                                                <div>
+                                                    <small class="text-muted">@assetDetailResponse!.Code</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <small>Categoría</small>
+                                                <div>
+                                                    <small class="text-muted">@assetDetailResponse!.Category?.Name</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <small>Ubicación</small>
+                                                <div>
+                                                    <small class="text-muted">@assetDetailResponse.Location</small>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <small>Código</small>
-                                            <div>
-                                                <small class="text-muted">ACT-00012345</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small>Categoría</small>
-                                            <div>
-                                                <small class="text-muted">Equipo de Computo</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small>Ubicación</small>
-                                            <div>
-                                                <small class="text-muted">Oficina RRHH</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="my-2"></div>
-                                    @* Propiedades Particulares *@
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <small>PROCESADOR</small>
-                                            <div>
-                                                <small class="text-muted">Intel Core i5 4ta Gen</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small>MEMORIA</small>
-                                            <div>
-                                                <small class="text-muted">16Gb DDR 5</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small>DISCO DURO</small>
-                                            <div>
-                                                <small class="text-muted">SDD 512Gb</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small>Otros</small>
-                                            <div>
-                                                <small class="text-muted">CD-ROM + Lector Tarjetas</small>
-                                            </div>
+                                        <div class="my-2"></div>
+                                        @* Propiedades Particulares *@
+                                        <p class="card-description">Detalle</p>
+                                        <div class="row mx-2">
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    @foreach (var prop in assetDetailResponse.Details!)
+                                                    {
+                                                        <tr>
+                                                            <td><small>@prop.Property.Name</small> </td>
+                                                            <td><small>@prop.Value</small></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                </div>
+                                }
+
                                 @* FIN resumen del activo fijo *@
-                                <div class="my-2"></div>
-                                <div class="row">
+                                <div class="mb-3"></div>
+                                <div class="row mt-3">
                                     <div class="col-lg-12">
                                         <label>Justificación</label>
                                         <div style="width:100%">
-                                            <textarea class="form-control " rows="4"></textarea>
-
+                                            <input type="text" class="form-control" multiple @bind-value="@justification"/>
                                         </div>
                                     </div>
                                 </div>
@@ -108,10 +104,10 @@
                     <div class="form-group">
                     </div>
 
-                    <div class="row mt-3">
+                    <div class="row my-3">
                         <div>
                             <button class="btn btn-outline-danger" @onclick="Return">Cancelar</button>
-                            <button class="btn btn-outline-success" >Guardar</button>
+                            <button class="btn btn-outline-success" @onclick="CreateMaintenanceRequestAsync">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -121,11 +117,80 @@
 </div>
 
 @code {
-    private string DateNow = DateTime.UtcNow.ToString("dd/MM/yyyy");
+    private DateTime DateNow = DateTime.Now;
+    private AssetResponseDTO? responseInitialLoad;
+    private Asset? assetDetailResponse;
+    private List<AssetDetail>? details;
+    private int selectedAsset = 0;
+    private string justification = null!;
 
-    private string GetToDay()
+    @* Estas dos variable simulan el comportamiento del usuario legueado
+       Se debe ajustar el momelo para que la relación con usuario sea un string,
+       porque así lo guarda SQL Server
+    *@
+    private string userName = "admin@yopmail.com";
+    private string userId = "1";
+
+    protected override async Task OnInitializedAsync()
     {
-        return DateTime.UtcNow.ToString("dd/MM/yyyy");
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        string url = $"/api/Assets/GetAssetsByUser?userName={userName}&userId={userId}";
+        var httpResponse = await repository.GetAsync<AssetResponseDTO>(url);
+        responseInitialLoad = httpResponse.Response;
+        Console.WriteLine(responseInitialLoad);
+    }
+
+    private async Task AssetChangedAsync(ChangeEventArgs e)
+    {
+        selectedAsset = Convert.ToInt32(e.Value!);
+        assetDetailResponse = await LoadAssetDetailAsyn(selectedAsset);
+        details = assetDetailResponse.Details;
+    }
+
+    private async Task<Asset> LoadAssetDetailAsyn(int assetId)
+    {
+        var responseHttp = await repository.GetAsync<Asset>($"/getAssetDetails/{assetId}");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return null!;
+        }
+
+        return responseHttp.Response!;
+    }
+
+    private async Task CreateMaintenanceRequestAsync()
+    {
+        MaintenanceRequest request = new MaintenanceRequest()
+            {
+                RegisterDate = DateNow,
+                AssetId = selectedAsset,
+                UserName = "admin@yopmail.com",
+                Justification = justification
+            };
+        string url = "/api/MaintenanceRequest";
+        var responseHttp = await repository.PostAsync<MaintenanceRequest>(url, request);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        navigationManager.NavigateTo($"/");
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopEnd,
+                ShowConfirmButton = false,
+                Timer = 5000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud creada con éxito.");
     }
 
     private void Return() => navigationManager.NavigateTo($"/");

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace asset_project.WEB.Repositories
 {
-    public class Repository : IRepository
+    public class Repository: IRepository
     {
         private readonly HttpClient _httpClient;
 
@@ -91,4 +91,5 @@ namespace asset_project.WEB.Repositories
         }
 
     }
+
 }
