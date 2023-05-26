@@ -40,6 +40,8 @@ namespace asset_project.API.Data
 
         public DbSet<Schedule> Schedules { get; set; }
 
+        public DbSet<AssetTypeDetail> AssetTypeDetail { get; set; }
+
         public DbSet<WorkOrder> WorkOrders { get; set; }
 
         public DbSet<WorkOrderDetail> WorkOrderDetails { get; set; }
@@ -51,7 +53,7 @@ namespace asset_project.API.Data
             modelBuilder.Entity<State>().HasIndex(s => new { s.Name, s.CountryId });
             modelBuilder.Entity<City>().HasIndex(c => new { c.Name, c.StateId });
             modelBuilder.Entity<IdentificationType>().HasIndex(i => i.Id);
-            modelBuilder.Entity<Category>().HasIndex(c => c.Name);
+            modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<AssetType>().HasIndex(t => t.Name);
             modelBuilder.Entity<Person>().HasIndex(p => new { p.IdentificationNumber, p.IdentificationTypeId });
             modelBuilder.Entity<Property>().HasIndex(p => p.Name);
@@ -64,6 +66,7 @@ namespace asset_project.API.Data
             modelBuilder.Entity<Schedule>().HasIndex(s => s.Id);                   
             modelBuilder.Entity<WorkOrder>().HasIndex(w => w.Id);
             modelBuilder.Entity<WorkOrderDetail>().HasIndex(wd => wd.Id);
+            modelBuilder.Entity<AssetTypeDetail>().HasIndex(at => at.AssetTypeId);
 
         }
     }
