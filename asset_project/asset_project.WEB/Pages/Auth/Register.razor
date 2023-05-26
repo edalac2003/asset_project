@@ -95,7 +95,7 @@
     {
         userDTO.UserName = userDTO.Email;
         userDTO.UserType = UserType.Solicitante;
-        var responseHttp = await repository.PostAsync<UserDTO, string>("/api/accounts/CreateUser", userDTO);
+        var responseHttp = await repository.PostAsync<UserDTO>("/api/accounts/CreateUser", userDTO);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
