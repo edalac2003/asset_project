@@ -1,58 +1,60 @@
 ﻿@page "/maintenance/create"
+@attribute [Authorize(Roles = "Administrador, Coordinador, Solicitante, Asistente, Tecnico, Gerente")]
 
 @inject NavigationManager navigationManager
 @inject IRepository repository
+@inject SweetAlertService sweetAlertService
 
-<AuthorizeView Roles="Administrador, Coordinador, Solicitante, Asistente, Tecnico, Gerente">
-    <Authorized>
-        <div class="col-lg-12 grid-margin">
-            <div class="card col-lg-12 mx-auto">
-                <div class="card-body px-5 py-2">
-                    <div class="container">
-                        <div class="row">
-                            <h4 class="card-title">Registro Solicitudes de Mantenimiento </h4>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <div class="row mt-2">
-                                        <div class="col-md-6">
-                                            <label>Fecha</label>
-                                            <input type="date" class="form-control" @bind-value="MaintenanceRequest.RegisterDate" />
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-6">
-                                            <label>Solicitante</label>
-                                            <input class="form-control" value="@context.User.Identity!.Name" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>Activo fijo</label>
-                                            <select class="form-control" @onchange="AssetChangedAsync">
-                                                <option value="0">-- Seleccione un Activo fijo --</option>
-                                                @if (responseInitialLoad is not null)
-                                                {
-                                                    @foreach (var activo in responseInitialLoad!.assets!)
-                                                    {
-                                                        <option value=@activo.Id>@activo.Code</option>
-                                                    }
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="my-2"></div>
-                                    @if (selectedAsset > 0)
+
+<EditForm Model="maintenanceRequestDTO" OnValidSubmit="CreateMaintenanceRequestAsync">
+    <DataAnnotationsValidator />
+    <div class="col-lg-12 grid-margin">
+        <div class="container">
+            <div class="row">
+                <h4 class="card-title">Registro Solicitudes de Mantenimiento </h4>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha</label>
+                                <InputDate class="form-control" @bind-Value="@maintenanceRequestDTO.RegisterDate" />
+                                <ValidationMessage For="@(() => maintenanceRequestDTO.RegisterDate)" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Solicitante</label>
+                                <InputText class="form-control" @bind-Value="@maintenanceRequestDTO.UserName" />
+                                <ValidationMessage For="@(() => maintenanceRequestDTO.UserName)" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Activo fijo</label>
+                                <select class="form-control" @onchange="AssetChangedAsync">
+                                    <option value="0">-- Seleccione un Activo fijo --</option>
+                                    @if (responseInitialLoad is not null)
                                     {
-                                        <AssetDetails Asset="assetDetailResponse"></AssetDetails>
+                                        @foreach (var activo in responseInitialLoad!.assets!)
+                                        {
+                                            <option value=@activo.Id>@activo.Code</option>
+                                        }
                                     }
+                                </select>
+                                <ValidationMessage For="@(() => maintenanceRequestDTO.AssetId)" />
+                            </div>
+                        </div>
+                        <div class="my-2"></div>
+                        @if (selectedAsset > 0)
+                        {
+                            <AssetDetails Asset="assetDetailResponse"></AssetDetails>
+                        }
 
-                                    <div class="mb-3"></div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-12">
-                                            <label>Justificación</label>
-                                            <div style="width:100%">
-                                                <input type="text" class="form-control" multiple @bind-value="MaintenanceRequest.Justification" />
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="mb-3"></div>
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label class="form-label">Justificación</label>
+                                <div style="width:100%">
+                                    <InputText class="form-control" @bind-Value="@maintenanceRequestDTO.Justification" />
+                                    <ValidationMessage For="@(() => maintenanceRequestDTO.Justification)" />
                                 </div>
                             </div>
                         </div>
@@ -61,29 +63,24 @@
 
                         <div class="row my-3">
                             <div>
-                                <button class="btn btn-outline-danger" @onclick="Return">Cancelar</button>
-                                <button class="btn btn-outline-success" @onclick="CreateMaintenanceRequestAsync">Guardar</button>
+                                <button class="btn btn-danger" @onclick="Return">Cancelar</button>
+                                <button class="btn btn-success" @onclick="@(() => CreateMaintenanceRequestAsync())">Guardar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </Authorized>
-</AuthorizeView>
-
+    </div>
+</EditForm>
 
 @code {
-    private DateTime DateNow = DateTime.Now;
     private AssetResponseDTO? responseInitialLoad;
     private Asset? assetDetailResponse;
     private int selectedAsset = 0;
-    private string userName = string.Empty;
+    public string userName = string.Empty;
 
-    private UserDTO userDTO = new();
-
-
-    private MaintenanceRequest MaintenanceRequest = new MaintenanceRequest()
+    private MaintenanceRequestDTO maintenanceRequestDTO { get; set; } = new()
         {
             RegisterDate = DateTime.Now
         };
@@ -96,7 +93,8 @@
     {
         var authenticationState = await authenticationStateTask;
         var claims = authenticationState.User.Claims.ToList();
-        userName = authenticationState.User.Identity!.Name;
+        userName = authenticationState.User.Identity!.Name!;
+        maintenanceRequestDTO.UserName = userName;
         await LoadAsync();
     }
 
@@ -119,7 +117,6 @@
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            //await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return null!;
         }
 
@@ -128,27 +125,36 @@
 
     private async Task CreateMaintenanceRequestAsync()
     {
-        MaintenanceRequest.AssetId = selectedAsset;
-        MaintenanceRequest.UserName = userName;
-        string url = "/api/MaintenanceRequest";
-        var responseHttp = await repository.PostAsync<MaintenanceRequest>(url, MaintenanceRequest);
-        if (responseHttp.Error)
+        //Validar si existe una solicitud para el activo fijo en estado Registrada
+        var validateStatus = await repository.GetAsync<bool>($"/api/MaintenanceRequest/ExistsRequestByAsset?assetId={selectedAsset}");
+        if (validateStatus.Response)
         {
-            var message = await responseHttp.GetErrorMessageAsync();
-            //await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            await sweetAlertService.FireAsync("Error", "Ya existe una solicitud en curso para este Activo Fijo. <br>Por favor seleccione otro e intentelo nuevamente", SweetAlertIcon.Error);
             return;
         }
+        else
+        {
+            maintenanceRequestDTO.AssetId = selectedAsset;
+            maintenanceRequestDTO.UserName = userName;
+            var responseHttp = await repository.PostAsync<MaintenanceRequestDTO>("/api/MaintenanceRequest", maintenanceRequestDTO);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                return;
+            }
 
-        navigationManager.NavigateTo($"/");
-        //var toast = sweetAlertService.Mixin(new SweetAlertOptions
-        //    {
-        //        Toast = true,
-        //        Position = SweetAlertPosition.TopEnd,
-        //        ShowConfirmButton = false,
-        //        Timer = 5000
-        //    });
-        //await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud creada con éxito.");
+            navigationManager.NavigateTo($"/maintenance/my-requests");
+            var toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    Position = SweetAlertPosition.TopEnd,
+                    ShowConfirmButton = false,
+                    Timer = 5000
+                });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud creada exitosamente.");
+        }
+
     }
 
-    private void Return() => navigationManager.NavigateTo($"/");
+    private void Return() => navigationManager.NavigateTo($"/maintenance/my-requests");
 }

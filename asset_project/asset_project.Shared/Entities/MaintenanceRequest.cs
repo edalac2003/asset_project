@@ -12,6 +12,8 @@ namespace asset_project.Shared.Entities
 
         public DateTime? ClousureDate { get; set; } = null!;
 
+        public string? RequestNumber { get; set; }
+
         [Display(Name = "Justificación")]
         [MaxLength(300, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]

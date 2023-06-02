@@ -1,10 +1,11 @@
 ﻿using asset_project.API.Data;
+using asset_project.API.Helpers;
 using asset_project.API.Helpers.Interfaces;
+using asset_project.Shared.DTOs;
 using asset_project.Shared.Entities;
 using asset_project.Shared.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 
 namespace asset_project.API.Controllers
 {
@@ -15,6 +16,7 @@ namespace asset_project.API.Controllers
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
         private readonly IStatusTypeHelper _statusTypeHelper;
+        private int[] BLOQUED_STATUS = new int[3] { ((int)StatusTypeEnum.REGISTRADA), ((int)StatusTypeEnum.ASIGNADA), ((int)StatusTypeEnum.EN_EJECUCION) };
 
         public MaintenanceRequestController(DataContext context, IUserHelper userHelper, IStatusTypeHelper statusTypeHelper)
         {
@@ -78,12 +80,10 @@ namespace asset_project.API.Controllers
             if (maintenanceRequest != null && maintenanceRequest.StatusTypeId > 0)
             {
                 var statusType = await _statusTypeHelper.GetByIdAsync(maintenanceRequest.StatusTypeId);
-                if(statusType == null)
+                if (statusType == null)
                 {
                     return NotFound("No existe el StatusType");
-
                 }
-                //maintenanceRequest.StatusTypeId = statusType; 
                 maintenanceRequest.StatusType = (StatusType?)statusType;
                 _context.Update(maintenanceRequest);
                 try
@@ -109,29 +109,49 @@ namespace asset_project.API.Controllers
 
         }
 
+        [HttpGet("GetAsync")]
+        public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        {
+            var querable = _context.MaintenanceRequests
+                    .Include(s => s.StatusType)
+                    .Include(x => x.Asset).ThenInclude(x => x.AssetType)
+                    .Include(m => m.Asset).ThenInclude(c => c.Category)
+                    .Include(a => a.Asset).ThenInclude(x => x.Details)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                querable = querable.Where(c => c.UserName!.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            return Ok(await querable
+                .OrderByDescending(o => o.RegisterDate)
+                .Paginate(pagination)
+                .ToListAsync());
+        }
+
 
         [HttpGet("[action]")]
-        public async Task<List<MaintenanceRequest>> FindAll()
+        public async Task<IActionResult> GetPages([FromQuery] PaginationDTO pagination)
         {
-            return await _context.MaintenanceRequests
-                .Include(s => s.StatusType)
-                .Include(x => x.Asset).ThenInclude(x => x.AssetType)
-                .Include(m => m.Asset).ThenInclude(c => c.Category)
-                .Include(a => a.Asset).ThenInclude(x => x.Details)
-                .ToListAsync();
+            var queryable = _context.MaintenanceRequests.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(m => m.RequestNumber!.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+            return Ok(totalPages);
         }
 
-        [HttpGet("[action]/{userName}")]
-        public async Task<List<MaintenanceRequest>> FindAll(string userName)
+        [HttpGet("ExistsRequestByAsset")]
+        public async Task<IActionResult> ExistsRequestByAsset(int assetId)
         {
-            return await _context.MaintenanceRequests
-                .Include(s => s.StatusType)
-                .Include(x => x.Asset).ThenInclude(x => x.AssetType)
-                .Include(m => m.Asset).ThenInclude(c => c.Category)
-                .Include(a => a.Asset).ThenInclude(x => x.Details)
-                .Where(x => x.UserName == userName)
-                .ToListAsync();
-        }
+            var exists = await _context.MaintenanceRequests.FirstOrDefaultAsync(a => a.AssetId == assetId && (BLOQUED_STATUS.Contains(a.StatusTypeId)));
 
+            return Ok(exists != null);
+        }
     }
 }

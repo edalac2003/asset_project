@@ -112,7 +112,7 @@ a, .btn-link {
 
 .form-control {
     background-color: #2A3038 !important;
-    color: #495057 !important;
+    color: #fff !important;
 }
 
 .form-control:disabled {
@@ -123,4 +123,12 @@ a, .btn-link {
 .form-control[readonly] {
     background-color: #2A3038  !important;
     color: #495057 !important;
+}
+
+.form-label {
+    color: #8d8e90 !important;
+}
+
+.form-label-title {
+    color: #fff !important;
 }

@@ -28,20 +28,23 @@
     </div>
     <div class="my-2"></div>
     @* Propiedades Particulares *@
-    <p class="card-description">Detalle</p>
-    <div class="row mx-2">
-        <table class="table table-sm">
-            <tbody>
-                @foreach (var prop in Asset?.Details!)
-                {
-                    <tr>
-                        <td><small>@prop?.Property!.Name</small> </td>
-                        <td><small>@prop?.Value</small></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    @if (Asset is not null)
+    {
+        <p class="card-description">Detalle</p>
+        <div class="row mx-2">
+            <table class="table table-sm">
+                <tbody>
+                    @foreach (var prop in Asset?.Details!)
+                    {
+                        <tr>
+                            <td><small>@prop?.Property!.Name</small> </td>
+                            <td><small>@prop?.Value</small></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 
 @code {

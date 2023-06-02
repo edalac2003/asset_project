@@ -13,7 +13,7 @@ namespace asset_project.WEB.Auth
             new Claim("FirstName", "Administrador"),
             new Claim("LastName", "administrador"),
             new Claim(ClaimTypes.Name, "admin@yopmail.com"),
-            new Claim(ClaimTypes.Role, "Admin")
+            new Claim(ClaimTypes.Role, "Administrador")
         },
         authenticationType: "test");
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(adminUser)));
