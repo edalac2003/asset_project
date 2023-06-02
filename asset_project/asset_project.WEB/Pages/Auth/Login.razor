@@ -1,0 +1,59 @@
+﻿@page "/Login"
+
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+
+<EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
+    <DataAnnotationsValidator />
+    <div class="page">
+        <div class="container-scroller">
+            <div class="container-fluid full-page-wrapper">
+                <div class="row w-100 m-0">
+                    <div class="full-page-wrapper d-flex align-items-center auth ">
+                        <div class="card col-lg-6 mx-auto">
+                            <div class="card-body px-5 py-3">
+                                <h3 class="card-title text-center mb-3">Iniciar sesión</h3>
+                                <div class="form-group">
+                                    <label>Nombre de usuario *</label>
+                                    <InputText class="form-control p_input" @bind-Value="@loginDTO.Email" />
+                                    <ValidationMessage For="@(() => loginDTO.Email)" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Contraseña *</label>
+                                    <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
+                                    <ValidationMessage For="@(() => loginDTO.Password)" />
+                                </div>
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <a href="#" class="forgot-pass">¿Olvidó su contraseña?</a>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block enter-btn">Iniciar Sesión</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private LoginDTO loginDTO = new();
+
+    private async Task LoginAsync()
+    {
+        var responseHttp = await repository.PostAsync<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await loginService.LoginAsync(responseHttp.Response!.Token);
+        navigationManager.NavigateTo("/");
+    }
+}

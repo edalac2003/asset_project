@@ -1,0 +1,163 @@
+﻿@page "/asset/createAssetType"
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+@inject IRepository repository
+
+<div class="col-lg-12 grid-margin">
+    <div class="card col-lg-12 mx-auto">
+        <div class="card-body px-5 py-2">
+            <h4 class="card-title">Registro Tipo de Activo Fijo </h4>
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-form-label">Tipo Activo Fijo</label>
+                        <input type="text" class="form-control" @bind="this.AssetTypeName" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Propiedad</label>
+                            <select class="form-control" @bind="this.ValueProperty">
+                                <option selected>-- Seleccione --</option>
+                                @foreach (var property in properties!)
+                                {
+                                    <option value="@property.Id">@property.Name</option>
+                                }
+                            </select>
+                            <div class="row mb-3"></div>
+                            <div class="col-lg-12">
+                                <button type="button" class="btn btn-primary mr-2" @onclick="SaveTempAsync">Adicionar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Asignar propiedades</label>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Propiedad</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var property in properties!)
+                                        {
+                                            if (listpropertiesId.Contains(property.Id.ToString()))
+                                            {
+                                                <tr>
+                                                    <td>@property.Name</td>
+                                                    <td><button class="badge badge-danger" @onclick=@(()=>DeleteTempAsync(property.Id))>Quitar</button></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3 ">
+                        <button class="btn btn-dark" @onclick="Return">Cancelar</button>
+                        <button type="submit" class="btn btn-primary mr-2" @onclick=@(()=>CreateAssetTypeAsync(AssetTypeName))>Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private AssetType assetType = new();
+    private AssetTypeDetail assetTypeDetail = new();
+    private List<Property>? properties { get; set; }
+    private string ValueProperty = null!;
+    private string AssetTypeName = null!;
+    private int objectId;
+
+    List<string> listpropertiesId = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (properties == null)
+        {
+            await LoadAsync();
+        }
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<Property>>("/api/properties");
+        properties = responseHttp.Response;
+    }
+
+    private void SaveTempAsync()
+    {
+        foreach (var property in properties!)
+        {
+            if (listpropertiesId.Contains(ValueProperty))
+            {
+                return;
+            }
+            if (ValueProperty == property.Id.ToString())
+            {
+                listpropertiesId.Add(ValueProperty);
+            }
+        }
+
+    }
+
+    private void DeleteTempAsync(int Id)
+    {
+        listpropertiesId.Remove(Id.ToString());
+    }
+
+    private async Task CreateAssetTypeAsync(string AssetTypeName)
+    {
+        assetType.Name = AssetTypeName;
+        var responseHttp = await repository.PostAsync<AssetType, AssetType>("/api/assettipyescontroller", assetType);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        objectId = responseHttp.Response!.Id;
+        if (listpropertiesId == null)
+        {
+            return;
+        }
+        await CreateAssetTypeDetailAsync(objectId);
+
+    }
+
+    private async Task CreateAssetTypeDetailAsync(int objectId)
+    {
+        foreach (var propertyId in listpropertiesId!)
+        {
+            assetTypeDetail.AssetTypeId = objectId;
+            assetTypeDetail.PropertyId = Convert.ToInt32(propertyId);
+            var responseHttp = await repository.PostAsync("/api/assettypedetailscontroller", assetTypeDetail);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+        }
+        Return();
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}

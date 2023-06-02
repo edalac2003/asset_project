@@ -1,0 +1,195 @@
+﻿@page "/asset/createAsset"
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+@inject IRepository repository
+
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="row w-100 m-0">
+            <div class="full-page-wrapper d-flex align-items-cente">
+                <div class="card col-lg-12 mx-auto">
+                    <div class="card-body px-5 py-2">
+                        <h4 class="card-title text-left mb-3">Crear Activos Fijos</h4>
+                        <form class="form-sample" >
+                            <div class="container-fluid">
+                                <p class="card-description">Propiedades Genéricas</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Código</label>
+                                            <input type="text" class="form-control" @bind="asset.Code" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Categoría</label>
+                                            <select class="form-control" @onchange="AssetCategoryId">
+                                                <option selected>-- Seleccione --</option>
+                                                @foreach (var category in categories!)
+                                                {
+                                                    <option value="@category.Id">@category.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Fecha de Compra</label>
+                                            <input type="text" class="form-control" @bind="asset.PurchaseDate"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Valor de compra</label>
+                                            <input type="text" class="form-control" @bind="asset.PurchaseValue" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Vida Útil</label>
+                                            <input type="text" class="form-control" @bind="asset.UsefullLifetime" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Responsable</label>
+                                            <input type="text" class="form-control" @bind="asset.Responsible" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Ubicación</label>
+                                            <input type="text" class="form-control" @bind="asset.Location" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Tipo de Activo Fijo</label>
+                                            <select class="form-control" @onchange="ListProperties">
+                                                <option selected>-- Seleccione --</option>
+                                                @foreach (var assetType in assetTypes!)
+                                                {
+                                                    <option value="@assetType.Id">@assetType.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-description">Propiedades Específicas</p>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:50%">Propiedad</th>
+                                                        <th>Descripción</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (listProperties != null)
+                                                    {
+                                                        @foreach (var property in listProperties!)
+                                                        {
+                                                            <tr>
+                                                                <td>@property.Name</td>
+                                                                <td>@property.Description</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-6 ">
+                                        <button type="button" class="btn btn-dark" @onclick="Return">Cancelar</button>
+                                        <button type="button" class="btn btn-primary mr-2" @onclick="CreateAssetAsync">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private List<AssetType>? assetTypes { get; set; }
+    private List<Category>? categories { get; set; }
+    private List<AssetTypeDetail>? assetTypeDetails { get; set; }
+    private List<Property>? properties { get; set; }
+    private List<Property>? listProperties = new List<Property>();
+    private Asset asset = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (assetTypes == null && categories == null && properties == null)
+        {
+            await LoadAsync();
+
+        }
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp1 = await repository.GetAsync<List<AssetType>>("/api/assettipyescontroller");
+        var responseHttp2 = await repository.GetAsync<List<Category>>("/api/categories");
+        var responseHttp3 = await repository.GetAsync<List<Property>>("/api/properties");
+        assetTypes = responseHttp1.Response;
+        categories = responseHttp2.Response;
+        properties = responseHttp3.Response;
+    }
+
+    private async Task ListProperties(ChangeEventArgs assetTypeId)
+    {
+        listProperties!.Clear();
+        asset.AssetTypeId = Convert.ToInt32(assetTypeId.Value);
+        var responseHttp = await repository.GetAsync<List<AssetTypeDetail>>($"/api/assettypedetailscontroller/{assetTypeId.Value}");
+        assetTypeDetails = responseHttp.Response;
+
+        foreach (var property in properties!)
+        {
+            foreach (var assetTypeDetail in assetTypeDetails!)
+            {
+                if (property.Id == assetTypeDetail.PropertyId)
+                {
+                    listProperties!.Add(property);
+                }
+            }
+        }
+    }       
+
+    private void AssetCategoryId(ChangeEventArgs AssetCategoryId)
+    {
+        asset.CategoryId = Convert.ToInt32(AssetCategoryId.Value);
+    }
+
+    private async Task CreateAssetAsync()
+    {
+        var responseHttp = await repository.PostAsync("/api/assetcontroller", asset);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        Return();
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}

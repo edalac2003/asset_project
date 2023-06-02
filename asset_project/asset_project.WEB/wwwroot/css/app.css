@@ -99,3 +99,36 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.form-control {
+    background-color: #2A3038 !important;
+    color: #fff !important;
+}
+
+.form-control:disabled {
+    background-color: #2A3038 !important;
+    color: #495057 !important;
+}
+
+.form-control[readonly] {
+    background-color: #2A3038  !important;
+    color: #495057 !important;
+}
+
+.form-label {
+    color: #8d8e90 !important;
+}
+
+.form-label-title {
+    color: #fff !important;
+}
