@@ -138,7 +138,7 @@ namespace asset_project.API.Controllers
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(m => m.RequestNumber!.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(m => m.UserName!.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
             double count = await queryable.CountAsync();
