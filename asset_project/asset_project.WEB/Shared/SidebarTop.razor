@@ -102,7 +102,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
+                                    <img class="img-xs rounded-circle" src="@photoUser" alt="">
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">@context.User.Identity!.Name</p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
@@ -118,6 +118,18 @@
                                     </div>
                                     <div class="preview-item-content">
                                         <p class="preview-subject mb-1">Ver Perfil</p>
+                                    </div>
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                                <a href="user/EditUser" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-settings text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p onclick="/user/EditUser" class="preview-subject mb-1">Editar Perfil</p>
                                     </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -151,3 +163,21 @@
         </div>
     </nav>
 </div>
+
+@code {
+    private string? photoUser;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var authenticationState = await authenticationStateTask;
+        var claims = authenticationState.User.Claims.ToList();
+        var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
+        if (photoClaim is not null)
+        {
+            photoUser = photoClaim.Value;
+        }
+    }
+}

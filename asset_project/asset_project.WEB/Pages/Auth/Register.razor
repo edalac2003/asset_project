@@ -101,14 +101,6 @@
                     <ValidationMessage For="@(() => userDTO.CityId)" />
                 </div>
             </div>
-
-            <div class="mb-3">
-                <label>Foto:</label>
-                <div>
-                    <InputText class="form-control" @bind-Value="@userDTO.Photo" />
-                    <ValidationMessage For="@(() => userDTO.Photo)" />
-                </div>
-            </div>
             <div class="mb-3">
                 <label>Contraseña:</label>
                 <div>
@@ -123,6 +115,10 @@
                     <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                 </div>
             </div>
+            <div class="mb-3">
+                <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+            </div>
+
         </div>
         <div class="container">
             <button class="btn btn-outline-danger" @onclick="Return">Cancelar</button>
@@ -136,10 +132,23 @@
     private List<Country>? countries;
     private List<State>? states;
     private List<City>? cities;
+    private string? imageUrl;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadCountriesAsync();
+
+        if (!string.IsNullOrEmpty(userDTO.Photo))
+        {
+            imageUrl = userDTO.Photo;
+            userDTO.Photo = null;
+        }
+    }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        userDTO.Photo = imagenBase64;
+        imageUrl = null;
     }
 
     private async Task CountryChangedAsync(ChangeEventArgs e)
@@ -205,7 +214,6 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-
         await sweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
         navigationManager.NavigateTo("/");
     }

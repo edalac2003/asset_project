@@ -5,6 +5,7 @@
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 
+
 <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
     <DataAnnotationsValidator />
     <div class="page">
@@ -24,6 +25,9 @@
                                     <label>Contraseña *</label>
                                     <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
                                     <ValidationMessage For="@(() => loginDTO.Password)" />
+                                </div>
+                                <div class="card-footer">
+                                    <a class="bbtn btn-link" href="/ResendToken">Reenviar correro de activación de cuenta</a>
                                 </div>
                                 <div class="form-group d-flex align-items-center justify-content-between">
                                     <a href="#" class="forgot-pass">¿Olvidó su contraseña?</a>
