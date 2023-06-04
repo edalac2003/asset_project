@@ -145,6 +145,7 @@ namespace asset_project.API.Controllers
                 Expiration = expiration
             };
         }
+
         [HttpPost("ResedToken")]
         public async Task<ActionResult> ResedToken([FromBody] EmailDTO model)
         {
@@ -162,8 +163,8 @@ namespace asset_project.API.Controllers
             }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Saless- Confirmación de cuenta",
-                $"<h1>Sales - Confirmación de cuenta</h1>" +
+                $"Asset- Confirmación de cuenta",
+                $"<h1>Asset - Confirmación de cuenta</h1>" +
                 $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                 $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
 
@@ -174,6 +175,5 @@ namespace asset_project.API.Controllers
 
             return BadRequest(response.Message);
         }
-
     }
 }
