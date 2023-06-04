@@ -3,7 +3,7 @@ using System.Text;
 
 namespace asset_project.WEB.Repositories
 {
-    public class Repository: IRepository
+    public class Repository : IRepository
     {
         private readonly HttpClient _httpClient;
 
@@ -16,6 +16,13 @@ namespace asset_project.WEB.Repositories
         {
             _httpClient = httpClient;
         }
+
+        public async Task<HttpResponseWrapper<object>> Get(string url)
+        {
+            var responseHTTP = await _httpClient.GetAsync(url);
+            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
+        }
+
 
         public async Task<HttpResponseWrapper<object>> GetAsync(string url)
         {
@@ -34,10 +41,11 @@ namespace asset_project.WEB.Repositories
 
             return new HttpResponseWrapper<T>(default, true, responseHttp);
         }
+
         public async Task<HttpResponseWrapper<object>> PostAsync<T>(string url, T model)
         {
-            var messageJSON = JsonSerializer.Serialize(model);
-            var messageContet = new StringContent(messageJSON, Encoding.UTF8, "application/json");
+            var mesageJSON = JsonSerializer.Serialize(model);
+            var messageContet = new StringContent(mesageJSON, Encoding.UTF8, "application/json");
             var responseHttp = await _httpClient.PostAsync(url, messageContet);
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
@@ -52,9 +60,9 @@ namespace asset_project.WEB.Repositories
                 var response = await UnserializeAnswer<TResponse>(responseHttp, _jsonDefaultOptions);
                 return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
             }
+
             return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
-        
 
         public async Task<HttpResponseWrapper<object>> DeleteAsync(string url)
         {
@@ -86,9 +94,8 @@ namespace asset_project.WEB.Repositories
 
         private async Task<T> UnserializeAnswer<T>(HttpResponseMessage httpResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            var responseString = await httpResponse.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(responseString, jsonSerializerOptions)!;
+            var respuestaString = await httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(respuestaString, jsonSerializerOptions)!;
         }
     }
-
 }
