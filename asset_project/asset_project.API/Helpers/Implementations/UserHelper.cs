@@ -14,12 +14,22 @@ namespace asset_project.API.Helpers.Implementations
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
 
-        public UserHelper(DataContext dataContext, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
+        public UserHelper(DataContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
         {
-            _context = dataContext;
+            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
@@ -34,8 +44,8 @@ namespace asset_project.API.Helpers.Implementations
 
         public async Task CheckRoleAsync(string roleName)
         {
-            bool roleExist = await _roleManager.RoleExistsAsync(roleName);
-            if (!roleExist)
+            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
             {
                 await _roleManager.CreateAsync(new IdentityRole
                 {
@@ -50,9 +60,28 @@ namespace asset_project.API.Helpers.Implementations
                 .Include(u => u.City!)
                 .ThenInclude(c => c.State!)
                 .ThenInclude(s => s.Country!)
-                .FirstOrDefaultAsync(u => u.Email! == email);
+                .FirstOrDefaultAsync(x => x.Email == email);
             return user!;
+        }
 
+        public async Task<User> GetUserAsync(Guid userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.City!)
+                .ThenInclude(c => c.State!)
+                .ThenInclude(s => s.Country!)
+                .FirstOrDefaultAsync(x => x.Id == userId.ToString());
+            return user!;
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
         }
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
@@ -68,7 +97,16 @@ namespace asset_project.API.Helpers.Implementations
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
 
+        public async Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
         }
     }
 }
