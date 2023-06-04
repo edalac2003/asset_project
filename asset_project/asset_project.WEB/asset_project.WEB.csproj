@@ -18,8 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\MaintenanceRequest\Create\" />
-    <Folder Include="Pages\WorkOrder\Create\" />
+	  <Content Update="wwwroot\images\403-forbidden.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\images\404-notfound.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\images\noimage.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
   <ItemGroup>

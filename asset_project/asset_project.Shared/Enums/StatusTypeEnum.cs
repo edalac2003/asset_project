@@ -1,6 +1,6 @@
 ﻿namespace asset_project.Shared.Enums
 {
-    public enum StatusTypeEnum : uint
+    public enum StatusTypeEnum : int
     {
         REGISTRADA = 1,
         RECHAZADA = 2,

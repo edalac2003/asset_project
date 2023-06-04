@@ -1,19 +1,21 @@
-﻿@using asset_project.WEB.Pages.Login;
-
-<CascadingBlazoredModal Position="ModalPosition.Middle" Size="ModalSize.Large" HideHeader="true" DisableBackgroundCancel="true" AnimationType="ModalAnimationType.FadeInOut">
-<Router AppAssembly="@typeof(App).Assembly">
+﻿<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <p>Autorizando...</p>
+            </Authorizing>
+            <NotAuthorized>
+                <img src="images/403-forbidden.png" style="width:100%" alt=">No estas autorizado para ver este contenido..." />
+            </NotAuthorized>
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
         <CascadingAuthenticationState>
             <PageTitle>No encontrado</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Lo sentimos no hay nada en esta ruta.</p>
+                <img src="images/404-notfound.png" style="width:100%" alt="Lo sentimos no hay nada en esta ruta." />
             </LayoutView>
         </CascadingAuthenticationState>
-
     </NotFound>
 </Router>
-</CascadingBlazoredModal>

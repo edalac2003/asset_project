@@ -19,7 +19,7 @@ namespace asset_project.API.Data
         public async Task SeedAsync()
         {
             await FillCategories();
-            //await FillCountries();
+            await FillCountries();
             await FillIdentificationTypes();
             await FillNotificationTypes();
             await FillStatusTypes();
@@ -27,9 +27,7 @@ namespace asset_project.API.Data
             await CheckUserAsync("456789", "Administrador", "administrador", "admin@yopmail.com", "300 123456", "Administrador", UserType.Administrador);
             await CheckUserToRoleAsync("admin@yopmail.com", UserType.Administrador);
             await CheckUserToRoleAsync("admin@yopmail.com", UserType.Solicitante);
-
         }
-
 
         /*
          * Se llenan las tablas maestras
