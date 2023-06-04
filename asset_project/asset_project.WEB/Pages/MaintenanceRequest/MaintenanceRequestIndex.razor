@@ -56,7 +56,8 @@ else
                                                             <th style="width:15%" class="form-label-title">Fecha registro</th>
                                                             <th style="width:15%" class="form-label-title">Num. Solicitud</th>
                                                             <th style="width:15%" class="form-label-title">Código Activo</th>
-                                                            <th style="width:30%" class="form-label-title">Activo Fijo</th>
+                                                            <th style="width:15%" class="form-label-title">Activo Fijo</th>
+                                                            <th style="width:15%" class="form-label-title">Solicitante</th>
                                                             <th style="width:15%" class="form-label-title">Estado</th>
                                                             <th style="width:10%" class="form-label-title">Acciones</th>
                                                         </tr>
@@ -71,6 +72,7 @@ else
                                                                     <td><small>@maintenance.RequestNumber</small></td>
                                                                     <td><small>@maintenance.Asset!.Code</small></td>
                                                                     <td><small>@maintenance.Asset!.AssetType?.Name</small></td>
+                                                                    <td><small>@maintenance.Asset!.Responsible</small></td>
                                                                     <td><small>@maintenance.StatusType?.Name</small></td>
                                                                     <td>
                                                                         <button class="btn btn-light" @onclick=@(() => viewDetail(maintenance.Id))>Detalle</button>
@@ -89,7 +91,7 @@ else
                     </GenericList>
                 </div>
             </div>
-            
+
             <div class="container-fluid" ml-3 mr-3>
                 <div class="row">
                     <div class="col-md-12">
@@ -121,13 +123,25 @@ else
         var authenticationState = await authenticationStateTask;
         var claims = authenticationState.User.Claims.ToList();
         userName = authenticationState.User.Identity!.Name;
+
+        Filter = userName;
         await LoadTotalPagesAsync();
         await LoadMaintenanceRequest();
     }
 
     private async Task LoadMaintenanceRequest(int page = 1)
     {
-        var responseHttp = await repository.GetAsync<List<MaintenanceRequest>>($"/api/MaintenanceRequest/GetAsync?page={page}");
+        var url = string.Empty;
+        var authenticationState = await authenticationStateTask;
+        if (authenticationState.User.IsInRole("Solicitante"))
+        {
+            url = $"/api/MaintenanceRequest/GetAsync?page={page}&Filter={Filter}";
+        }
+        else
+        {
+            url = $"/api/MaintenanceRequest/GetAsync?page={page}";
+        }
+        var responseHttp = await repository.GetAsync<List<MaintenanceRequest>>(url);
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -150,14 +164,15 @@ else
 
     private async Task LoadTotalPagesAsync()
     {
+        var authenticationState = await authenticationStateTask;
         var url = string.Empty;
-        if (string.IsNullOrEmpty(Filter))
+        if (authenticationState.User.IsInRole("Solicitante"))
         {
-            url = "api/MaintenanceRequest/GetPages";
+            url = $"api/MaintenanceRequest/GetPages?Filter={Filter}";
         }
         else
         {
-            url = $"api/MaintenanceRequest/GetPages?filter={Filter}";
+            url = "api/MaintenanceRequest/GetPages";
         }
 
         var responseHppt = await repository.GetAsync<int>(url);
